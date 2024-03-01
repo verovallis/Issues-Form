@@ -4,13 +4,21 @@
 
 <div>
     <div class="col-md-8 mx-auto rounded border p-3">
-        <h2 class="text-center mb-5">New Request</h2>
+        <h2 class="text-center mb-5">Edit Form</h2>
 
         <form method="post" enctype="multipart/form-data">
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Id</label>
+                <div class="col-md-8">
+                    <input class="form-control-plaintext" readonly value=@ViewData["FormId"] />
+                </div>
+            </div>
+
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Name</label>
                 <div class="col-md-8">
-                    <input class="form-control" asp-for="Name"/>
+                    <input class="form-control" asp-for="Name" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
@@ -43,13 +51,11 @@
                 <label class="col-sm-4 col-form-label">Category</label>
                 <div class="col-md-8">
                     <select class="form-select" asp-for="Category">
-                        <option value=""selected disabled hidden>Choose this option</option>
                         <option value='Building'>Building</option>
                         <option value='Equipment'>Equipment</option>
                         <option value='Electrical'>Electrical</option>
                         <option value='Water'>Water</option>
                     </select>
-                    <span asp-validation-for="Category" class="text-danger"></span>
                 </div>
             </div>
 
@@ -57,7 +63,6 @@
                 <label class="col-sm-4 col-form-label">Building</label>
                 <div class="col-md-8">
                     <select class="form-select" asp-for="Building">
-                        <option value="" selected disabled hidden>Choose this option</option>
                         <option value='1'>1</option>
                         <option value='2'>2</option>
                         <option value='3'>3</option>
@@ -67,7 +72,6 @@
                         <option value='7'>7</option>
                         <option value='8'>8</option>
                     </select>
-                <span asp-validation-for="Building" class="text-danger"></span>
                 </div>
             </div>
 
@@ -75,12 +79,10 @@
                 <label class="col-sm-4 col-form-label">Company</label>
                 <div class="col-md-8">
                     <select class="form-select" asp-for="Company">
-                        <option value="" selected disabled hidden>Choose this option</option>
                         <option value='GWM'>GWM</option>
                         <option value='Mercedez-Benz Indonesia'>Mercedez-Benz Indonesia</option>
                         <option value='Mercedez-Benz Indonesia - Distribution'>Mercedez-Benz Indonesia - Distribution</option>
                     </select>
-                <span asp-validation-for="Company" class="text-danger"></span>
                 </div>
             </div>
 
@@ -93,10 +95,23 @@
             </div>
 
             <div class="row mb-3">
+                <div class="offset-sm-4 col-md-8">
+                    <img src="/form/@ViewData["Attachment"]" width="150"/>
+                </div>
+            </div>
+
+            <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Attach</label>
                 <div class="col-md-8">
                     <input class="form-control" asp-for="Attach" />
                     <span asp-validation-for="Attach" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Created At</label>
+                <div class="col-sm-8">
+                    <input class="form-control-plaintext" readonly value=@ViewData["CreatedAt"]>
                 </div>
             </div>
 
@@ -110,6 +125,7 @@
                     </a>
                 </div>
             </div>
+
         </form>
     </div>
 </div>

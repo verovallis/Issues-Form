@@ -21,6 +21,5 @@ namespace Issues_Form.Models
         [Required]
         public string Description { get; set; } = "";
         public IFormFile? Attach { get; set; }
-
     }
 }
