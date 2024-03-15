@@ -3,6 +3,10 @@ using Issues_Form.Services;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Console;
+using Microsoft.SqlServer.Server;
+using Issues_Form.Models;
+using System.Net.Mail;
+using System.Net;
 
 namespace Issues_Form.Controllers
 {
@@ -40,7 +44,7 @@ namespace Issues_Form.Controllers
             {
                 return View(formDto);
             }
-            
+
             //save image file
             string newFileName = DateTime.Now.ToString("fffssmmHHddMMyyyy");
             if (formDto.Attach != null)
@@ -76,7 +80,63 @@ namespace Issues_Form.Controllers
             context.Form.Add(form);
             context.SaveChanges();
 
-            return RedirectToAction("Index","Form");
+            string defaultSender = "robin28@student.ub.ac.id";
+            string defaultRecipient = "robin28@student.ub.ac.id";
+            string subject = "Issues Form Submission: " + formDto.Subject;
+            string body = $"Dear {formDto.Name}," +
+                        $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
+                        $"Name: {formDto.Name}<br>" +
+                        $"Email: {formDto.Email}<br>" +
+                        $"Phone Number: {formDto.PhoneNumber}<br>" +
+                        $"Subject: {formDto.Subject}" +
+                        $"<br>Category: {formDto.Category}" +
+                        $"<br>Building: {formDto.Building}" +
+                        $"<br>Company: {formDto.Company}" +
+                        $"<br>Description: {formDto.Description}" +
+                        $"<br><br>We apologize for any inconvenience caused and appreciate your report. Our team has initiated an investigation process to identify the root cause of this issue and is actively working to rectify it. Should further assistance be required, our team members will reach out to you promptly to provide additional support in resolving this matter." +
+                        $"<br><br>Thank you for your patience and understanding.<br><br>";
+
+            // Call SendMail method
+            SendMail(new Mail
+            {
+                From = defaultSender,
+                To = $"{formDto.Email},{defaultRecipient}",
+                Subject = subject,
+                Body = body
+            });
+
+            return RedirectToAction("Confirmation","Form");
+        }
+
+        [HttpPost]
+        public ActionResult SendMail(Issues_Form.Models.Mail model)
+        {
+            MailMessage mailMessage = new MailMessage(model.From, model.To);
+            
+            mailMessage.Subject = model.Subject;
+            // Create a multi-part email with both HTML and plain text bodies
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(model.Body, null, "text/html");
+            mailMessage.AlternateViews.Add(htmlView);
+
+            mailMessage.IsBodyHtml = true;
+
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.EnableSsl = true;
+
+
+            NetworkCredential cred = new NetworkCredential("robin28@student.ub.ac.id", "vrvx owbf atue hvro");
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = cred;
+            smtp.Send(mailMessage);
+
+            return RedirectToAction("Confirmation", "Form");
+        }
+
+        public IActionResult Confirmation()
+        {
+            return View();
         }
 
         public IActionResult Edit(int id)
