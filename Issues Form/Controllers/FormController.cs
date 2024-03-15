@@ -45,10 +45,19 @@ namespace Issues_Form.Controllers
                 return View(formDto);
             }
 
+
             //save image file
-            string newFileName = DateTime.Now.ToString("fffssmmHHddMMyyyy");
+            string newFileName = "AttachIssues_" + DateTime.Now.ToString("HHmmss_dd-MM-yyyy");
+            string finalAttachPath; //for email attachment only
             if (formDto.Attach != null)
             {
+
+                if (!formDto.Attach.ContentType.StartsWith("image/") || formDto.Attach.Length > (10 * 1024 * 1024)) // max 10 MB file size
+                {
+                    ModelState.AddModelError("Attach", "File must be a valid image with a maximum size of 10MB.");
+                    return View(formDto);
+                }
+
                 newFileName += Path.GetExtension(formDto.Attach!.FileName);
 
                 string imageFullPath = environment.WebRootPath + "/form/" + newFileName;
@@ -56,10 +65,12 @@ namespace Issues_Form.Controllers
                 {
                     formDto.Attach.CopyTo(stream);
                 }
+                finalAttachPath = imageFullPath;
             }
             else
             {
                 newFileName = "-";
+                finalAttachPath = "-";
             }
 
             //save the new product in the database
@@ -85,6 +96,7 @@ namespace Issues_Form.Controllers
             string subject = "Issues Form Submission: " + formDto.Subject;
             string body = $"Dear {formDto.Name}," +
                         $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
+                        $"Report ID: {form.Id}<br>" +
                         $"Name: {formDto.Name}<br>" +
                         $"Email: {formDto.Email}<br>" +
                         $"Phone Number: {formDto.PhoneNumber}<br>" +
@@ -95,15 +107,16 @@ namespace Issues_Form.Controllers
                         $"<br>Description: {formDto.Description}" +
                         $"<br><br>We apologize for any inconvenience caused and appreciate your report. Our team has initiated an investigation process to identify the root cause of this issue and is actively working to rectify it. Should further assistance be required, our team members will reach out to you promptly to provide additional support in resolving this matter." +
                         $"<br><br>Thank you for your patience and understanding.<br><br>";
-
+            
             // Call SendMail method
             SendMail(new Mail
             {
                 From = defaultSender,
                 To = $"{formDto.Email},{defaultRecipient}",
                 Subject = subject,
-                Body = body
-            });
+                Body = body,
+                AttachmentPath = finalAttachPath
+        });
 
             return RedirectToAction("Confirmation","Form");
         }
@@ -117,14 +130,20 @@ namespace Issues_Form.Controllers
             // Create a multi-part email with both HTML and plain text bodies
             AlternateView htmlView = AlternateView.CreateAlternateViewFromString(model.Body, null, "text/html");
             mailMessage.AlternateViews.Add(htmlView);
-
             mailMessage.IsBodyHtml = true;
+
+            string attachmentPath = model.AttachmentPath;
+            if (attachmentPath != "-")
+            {
+                // Add attachment to the email
+                System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(attachmentPath);
+                mailMessage.Attachments.Add(attachment);
+            }
 
             SmtpClient smtp = new SmtpClient();
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
             smtp.EnableSsl = true;
-
 
             NetworkCredential cred = new NetworkCredential("robin28@student.ub.ac.id", "vrvx owbf atue hvro");
             smtp.UseDefaultCredentials = false;
@@ -188,12 +207,11 @@ namespace Issues_Form.Controllers
                 return View(formDto);
             }
 
-
             // update the image file if we have a new image file
             string newFileName = form.Attachment;
             if (formDto.Attach != null)
             {
-                newFileName = DateTime.Now.ToString("fffssmmHHddMMyyyy");
+                newFileName = DateTime.Now.ToString("ss-mm-HH-dd-MM-yyyy");
                 newFileName += Path.GetExtension(formDto.Attach.FileName);
 
                 string imageFullPath = environment.WebRootPath + "/form/" + newFileName;
@@ -232,11 +250,14 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
-            string imageFullPath = environment.WebRootPath + "/form/" + form.Attachment;
-            System.IO.File.Delete(imageFullPath);
-
             context.Form.Remove(form);
-            context.SaveChanges(true);
+            context.SaveChanges(); // Remove form entry from the database
+
+            string imageFullPath = environment.WebRootPath + "/form/" + form.Attachment;
+            if (System.IO.File.Exists(imageFullPath))
+            {
+                System.IO.File.Delete(imageFullPath); // Delete associated file if it exists
+            }
             return RedirectToAction("Index", "Form");
         }
     }
