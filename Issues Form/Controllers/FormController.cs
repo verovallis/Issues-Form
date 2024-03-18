@@ -47,7 +47,7 @@ namespace Issues_Form.Controllers
 
 
             //save image file
-            string newFileName = "AttachIssues_" + DateTime.Now.ToString("HHmmss_dd-MM-yyyy");
+            string newFileName = "AttachIssues_" + formDto.Name + "_" + DateTime.Now.ToString("HHmmss_dd-MM-yyyy");
             string finalAttachPath; //for email attachment only
             if (formDto.Attach != null)
             {
@@ -61,11 +61,11 @@ namespace Issues_Form.Controllers
                 newFileName += Path.GetExtension(formDto.Attach!.FileName);
 
                 string imageFullPath = environment.WebRootPath + "/form/" + newFileName;
+                finalAttachPath = imageFullPath;
                 using (var stream = System.IO.File.Create(imageFullPath))
                 {
                     formDto.Attach.CopyTo(stream);
                 }
-                finalAttachPath = imageFullPath;
             }
             else
             {
@@ -116,7 +116,7 @@ namespace Issues_Form.Controllers
                 Subject = subject,
                 Body = body,
                 AttachmentPath = finalAttachPath
-        });
+            });
 
             return RedirectToAction("Confirmation","Form");
         }
@@ -185,6 +185,8 @@ namespace Issues_Form.Controllers
             ViewData["FormId"] = form.Id;
             ViewData["Attachment"] = form.Attachment;
             ViewData["CreatedAt"] = form.CreatedAt;
+            ViewData["Status"] = form.Status;
+            ViewData["AdminComment"] = form.AdminComment;
 
             return View(formDto);
         }
@@ -198,45 +200,40 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
-            if (!ModelState.IsValid)
-            {
-                ViewData["FormId"] = form.Id;
-                ViewData["Attachment"] = form.Attachment;
-                ViewData["CreatedAt"] = form.CreatedAt.ToString("dd/MM/yyyy");
 
-                return View(formDto);
-            }
-
-            // update the image file if we have a new image file
-            string newFileName = form.Attachment;
-            if (formDto.Attach != null)
-            {
-                newFileName = DateTime.Now.ToString("ss-mm-HH-dd-MM-yyyy");
-                newFileName += Path.GetExtension(formDto.Attach.FileName);
-
-                string imageFullPath = environment.WebRootPath + "/form/" + newFileName;
-                using (var stream = System.IO.File.Create(imageFullPath))
-                {
-                    formDto.Attach.CopyTo(stream);
-                }
-
-                //delete old image
-                string oldImageFullPath = environment.WebRootPath + "/form/" + form.Attachment;
-                System.IO.File.Delete(oldImageFullPath);
-            }
-
-            //save the new product in the database
-            form.Name = formDto.Name;
-            form.Email = formDto.Email;
-            form.PhoneNumber = formDto.PhoneNumber;
-            form.Subject = formDto.Subject;
-            form.Category = formDto.Category;
-            form.Building = formDto.Building;
-            form.Company = formDto.Company;
-            form.Description = formDto.Description;
-            form.Attachment = newFileName;
+            form.Status = formDto.Status;
+            form.AdminComment = formDto.AdminComment;
 
             context.SaveChanges();
+
+            string defaultSender = "robin28@student.ub.ac.id";
+            string defaultRecipient = "robin28@student.ub.ac.id";
+            string subject = "Issues Form Submission: " + formDto.Subject;
+            string body = $"Dear {formDto.Name}," +
+                        $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
+                        $"Report ID: {form.Id}<br>" +
+                        $"Name: {formDto.Name}<br>" +
+                        $"Email: {formDto.Email}<br>" +
+                        $"Phone Number: {formDto.PhoneNumber}<br>" +
+                        $"Subject: {formDto.Subject}" +
+                        $"<br>Category: {formDto.Category}" +
+                        $"<br>Building: {formDto.Building}" +
+                        $"<br>Company: {formDto.Company}" +
+                        $"<br>Description: {formDto.Description}" +
+                        $"<br><br>Thank you for your patience. After investigating this issue, we have identified some areas requiring clarification." +
+                        $"<br>To ensure we're on the same page, we've outlined a few comments and questions below:" +
+                        $"<br><br>Issues Status: {formDto.Status}"+
+                        $"<br>From Admin: {formDto.AdminComment}<br><br>";
+
+            // Call SendMail method
+            SendMail(new Mail
+            {
+                From = defaultSender,
+                To = $"{formDto.Email},{defaultRecipient}",
+                Subject = subject,
+                Body = body,
+                AttachmentPath = "-"
+            });
 
             return RedirectToAction("Index", "Form");
         }
@@ -250,14 +247,16 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
+
+            string finalPath = environment.WebRootPath + "/form/" + form.Attachment;
+            if (System.IO.File.Exists(finalPath))
+            {
+                System.IO.File.Delete(finalPath); // Delete associated file if it exists
+            }
+
             context.Form.Remove(form);
             context.SaveChanges(); // Remove form entry from the database
 
-            string imageFullPath = environment.WebRootPath + "/form/" + form.Attachment;
-            if (System.IO.File.Exists(imageFullPath))
-            {
-                System.IO.File.Delete(imageFullPath); // Delete associated file if it exists
-            }
             return RedirectToAction("Index", "Form");
         }
     }
