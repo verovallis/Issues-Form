@@ -107,7 +107,7 @@ namespace Issues_Form.Controllers
                         $"<br>Description: {formDto.Description}" +
                         $"<br><br>We apologize for any inconvenience caused and appreciate your report. Our team has initiated an investigation process to identify the root cause of this issue and is actively working to rectify it. Should further assistance be required, our team members will reach out to you promptly to provide additional support in resolving this matter." +
                         $"<br><br>Thank you for your patience and understanding.<br><br>";
-            
+
             // Call SendMail method
             SendMail(new Mail
             {
@@ -118,14 +118,14 @@ namespace Issues_Form.Controllers
                 AttachmentPath = finalAttachPath
             });
 
-            return RedirectToAction("Confirmation","Form");
+            return RedirectToAction("Confirmation", "Form");
         }
 
         [HttpPost]
         public ActionResult SendMail(Issues_Form.Models.Mail model)
         {
             MailMessage mailMessage = new MailMessage(model.From, model.To);
-            
+
             mailMessage.Subject = model.Subject;
             // Create a multi-part email with both HTML and plain text bodies
             AlternateView htmlView = AlternateView.CreateAlternateViewFromString(model.Body, null, "text/html");
@@ -162,7 +162,7 @@ namespace Issues_Form.Controllers
         {
             var form = context.Form.Find(id);
 
-            if(form == null)
+            if (form == null)
             {
                 return RedirectToAction("Index", "Form");
             }
@@ -200,15 +200,15 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
-            //replace or add the status and AdminComment database
+            // Update to database
             form.Status = formDto.Status;
             form.AdminComment = formDto.AdminComment;
             context.SaveChanges();
 
-            // pre-call SendMail method
+            // Pre-Call SendMail method
             string defaultSender = "robin28@student.ub.ac.id";
             string defaultRecipient = "robin28@student.ub.ac.id";
-            string subject = "Issues Form Submission: " + form.Subject;
+            string subject = "Issues Form Submission: " + formDto.Subject;
             string body = $"Dear {form.Name}," +
                         $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
                         $"Report ID: {form.Id}<br>" +
@@ -222,7 +222,7 @@ namespace Issues_Form.Controllers
                         $"Description: {form.Description}" +
                         $"<br><br>Thank you for your patience. After investigating this issue, we have identified some areas requiring clarification." +
                         $"<br>To ensure we're on the same page, we've outlined a few comments and questions below:" +
-                        $"<br><br>Issues Status: {form.Status}"+
+                        $"<br><br>Issues Status: {form.Status}" +
                         $"<br>From Admin: {form.AdminComment}<br><br>";
 
             // Call SendMail method
