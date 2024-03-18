@@ -39,50 +39,39 @@
                 </div>
             </div>
 
+                        <!-- Modify the Category dropdown -->
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Category</label>
                 <div class="col-md-8">
-                    <select class="form-select" asp-for="Category">
-                        <option value=""selected disabled hidden>Choose this option</option>
-                        <option value='Building'>Building</option>
-                        <option value='Equipment'>Equipment</option>
-                        <option value='Electrical'>Electrical</option>
-                        <option value='Water'>Water</option>
+                    <select class="form-select" asp-for="Category" asp-items="@(ViewBag.Categories as List<SelectListItem>)">
+                        <option value="" selected disabled hidden>Choose this option</option>
                     </select>
                     <span asp-validation-for="Category" class="text-danger"></span>
                 </div>
             </div>
 
+            <!-- Modify the Building dropdown -->
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Building</label>
                 <div class="col-md-8">
-                    <select class="form-select" asp-for="Building">
+                    <select class="form-select" asp-for="Building" asp-items="@(ViewBag.Buildings as List<SelectListItem>)">
                         <option value="" selected disabled hidden>Choose this option</option>
-                        <option value='1'>1</option>
-                        <option value='2'>2</option>
-                        <option value='3'>3</option>
-                        <option value='4'>4</option>
-                        <option value='5'>5</option>
-                        <option value='6'>6</option>
-                        <option value='7'>7</option>
-                        <option value='8'>8</option>
                     </select>
-                <span asp-validation-for="Building" class="text-danger"></span>
+                    <span asp-validation-for="Building" class="text-danger"></span>
                 </div>
             </div>
 
+            <!-- Modify the Company dropdown -->
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Company</label>
                 <div class="col-md-8">
-                    <select class="form-select" asp-for="Company">
+                    <select class="form-select" asp-for="Company" asp-items="@(ViewBag.Companies as List<SelectListItem>)">
                         <option value="" selected disabled hidden>Choose this option</option>
-                        <option value='GWM'>GWM</option>
-                        <option value='Mercedez-Benz Indonesia'>Mercedez-Benz Indonesia</option>
-                        <option value='Mercedez-Benz Indonesia - Distribution'>Mercedez-Benz Indonesia - Distribution</option>
                     </select>
-                <span asp-validation-for="Company" class="text-danger"></span>
+                    <span asp-validation-for="Company" class="text-danger"></span>
                 </div>
             </div>
+
 
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Description</label>
@@ -105,7 +94,7 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
                 <div class="col-sm-4 d-grid">
-                    <a class="btn btn-outline-primary" asp-controller="Form" asp-action="Index" role="button">
+                    <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Logout" role="button">
                         Cancel
                     </a>
                 </div>

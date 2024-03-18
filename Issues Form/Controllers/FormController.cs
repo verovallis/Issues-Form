@@ -3,10 +3,15 @@ using Issues_Form.Services;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Console;
+<<<<<<< Updated upstream
 using Microsoft.SqlServer.Server;
 using Issues_Form.Models;
 using System.Net.Mail;
 using System.Net;
+=======
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
+>>>>>>> Stashed changes
 
 namespace Issues_Form.Controllers
 {
@@ -28,6 +33,28 @@ namespace Issues_Form.Controllers
         public IActionResult Create()
         {
             var form = context.Form.OrderByDescending(p => p.Id).ToList();
+            var categories = context.Category_Param.Select(c => new SelectListItem
+            {
+                Value = c.Category_Issues,
+                Text = c.Category_Issues
+            }).ToList();
+
+            var buildings = context.Building_Param.Select(b => new SelectListItem
+            {
+                Value = b.Building,
+                Text = b.Building
+            }).ToList();
+
+            var companies = context.Company_Param.Select(c => new SelectListItem
+            {
+                Value = c.Company_Name,
+                Text = c.Company_Name
+            }).ToList();
+
+            ViewBag.Categories = categories;
+            ViewBag.Buildings = buildings;
+            ViewBag.Companies = companies;
+
             return View();
         }
 
@@ -166,6 +193,7 @@ namespace Issues_Form.Controllers
             {
                 return RedirectToAction("Index", "Form");
             }
+
 
 
             //create formDto from form

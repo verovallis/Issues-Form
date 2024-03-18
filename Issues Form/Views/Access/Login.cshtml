@@ -1,0 +1,53 @@
+@model Issues_Form.Models.VMLogin;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="~/css/globals.css" />
+    <link rel="stylesheet" href="~/css/styleguide.css" />
+    <link rel="stylesheet" href="~/css/Login.css" />
+    <link rel="image" src="~/Access/image-4.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <div class="overlap-group">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar-logo">
+                <img src="https://media.licdn.com/dms/image/D4D0BAQGjpdt_7qB22g/company-logo_200_200/0/1695231492698?e=2147483647&v=beta&t=WIX2uuSeQdxsVi8bYOqkSgudgADI2oYfcWkZDpdfcN8">
+            </div>
+            <ul class="navbar-menu">
+                <!-- Tambahkan item-menu di sini -->
+            </ul>
+        </nav>
+    <form asp-controller="Access" asp-action="Login" method="post">
+        <div class="form-request-login">
+            <div class="div">
+                <div class="frame">
+                    <div class="frame-2">
+                        <div class="text-wrapper">Email</div>
+                        <input type="email" id="Email" asp-for="Email" class="input-medium" required autocomplete="email" placeholder="Enter your email here"/>
+                        <div class="text-wrapper-2">Password</div>
+                        <input type="password" id="Password" asp-for="Password" class="input-medium" required autocomplete="current-password" placeholder="Enter your password"/>
+                    </div>
+                    <button type="submit" class="primary-large">Login</button>
+                    <div class="text-wrapper-3">
+                    <div> <input type="checkbox" asp-for="KeepLoggedIn"/>Keep me logged in</div
+                </div>
+                        @if (ViewData["ValidateMessage"] != null)
+                        {
+                            <br />
+                            <br />
+                            <label>@ViewData["ValidateMessage"]</label>
+                        }
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
