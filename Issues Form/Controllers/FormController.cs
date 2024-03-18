@@ -3,15 +3,12 @@ using Issues_Form.Services;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Console;
-<<<<<<< Updated upstream
 using Microsoft.SqlServer.Server;
 using Issues_Form.Models;
 using System.Net.Mail;
 using System.Net;
-=======
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
->>>>>>> Stashed changes
 
 namespace Issues_Form.Controllers
 {
