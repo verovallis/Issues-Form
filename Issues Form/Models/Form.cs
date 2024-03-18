@@ -19,11 +19,10 @@ namespace Issues_Form.Models
         public string Building { get; set; } = "";
         [MaxLength(100)]
         public string Company { get; set; } = "";
-
         public string Description { get; set; } = "";
-        [MaxLength(100)]
         public string Attachment { get; set; } = "";
-        [MaxLength(100)]
+        public string Status { get; set; } = "Not Started";
+        public string? AdminComment { get; set; } = "";
         public DateTime CreatedAt { get; set; }
     }
 }

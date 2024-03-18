@@ -21,5 +21,8 @@ namespace Issues_Form.Models
         [Required]
         public string Description { get; set; } = "";
         public IFormFile? Attach { get; set; }
+        public string Status { get; set; } = "Not Started";
+        public string? AdminComment { get; set; } = "";
+
     }
 }

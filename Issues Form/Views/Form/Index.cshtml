@@ -2,36 +2,42 @@
 @{
 }
 
-<h2 class ="text-center mb-5"></h2>
+<h2 class="text-center mb-5">Admin : Form List</h2>
 
-<div class="row mb-5">
+<div class="row mb-3">
     <div class="col">
         <a class="btn btn-primary" asp-controller="Form" asp-action="Create">New Request</a>
     </div>
     <div class="col">
-
+        <div class="input-group">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search...">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button" id="searchButton">Search</button>
+            </div>
+        </div>
     </div>
 </div>
 
-<table class = "table">
+<table class="table">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Subject</th>
-            <th>Category</th>
-            <th>Building</th>
-            <th>Company</th>
-            <th>Description</th>
-            <th>Attachment</th>
-            <th>Created At</th>
+            <th onclick="sortTable(0)">ID</th>
+            <th onclick="sortTable(1)">Name</th>
+            <th onclick="sortTable(2)">Email</th>
+            <th onclick="sortTable(3)">Phone Number</th>
+            <th onclick="sortTable(4)">Subject</th>
+            <th onclick="sortTable(5)">Category</th>
+            <th onclick="sortTable(6)">Building</th>
+            <th onclick="sortTable(7)">Company</th>
+            <th onclick="sortTable(8)">Description</th>
+            <th onclick="sortTable(9)">Attachment</th>
+            <th onclick="sortTable(10)">Created At</th>
+            <th onclick="sortTable(11)">Status</th>
+            <th onclick="sortTable(12)">Admin Comment</th>
             <th>Action</th>
         </tr>
     </thead>
-
-    <tbody>
+    <tbody id="tableBody">
         @foreach (var form in Model)
         {
             <tr>
@@ -44,18 +50,106 @@
                 <td>@form.Building</td>
                 <td>@form.Company</td>
                 <td>@form.Description</td>
-                <td><img src="/form/@form.Attachment" width="100"/></td>
+                <td><img src="/form/@form.Attachment" width="100" /></td>
                 <td>@form.CreatedAt.ToString("dd/MM/yyyy")</td>
-                <td>Action</td>
-                <td style="white-space:nowrap">
-                    <a class="btn btn-primary btn-sm" asp-controller="Form" asp-action="Edit"
-                        asp-route-id="@form.Id">Edit</a>
-                    <a class="btn btn-danger btn-sm" asp-controller="Form" asp-action="Delete"
-                        asp-route-id="@form.Id">Delete</a>
+                <td>@form.Status</td>
+                <td>@form.AdminComment</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Action Buttons">
+                        <a class="btn btn-primary btn-sm" asp-controller="Form" asp-action="Edit" asp-route-id="@form.Id">Update</a>
+                        <a class="btn btn-danger btn-sm" asp-controller="Form" asp-action="Delete" asp-route-id="@form.Id">Delete</a>
+                    </div>
                 </td>
-
             </tr>
         }
     </tbody>
-
 </table>
+
+@section Scripts {
+    <script>
+        // Function to filter table rows based on search input
+        function filterTable() {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tableBody");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                            break;
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+        }
+
+        // Attach event listener to search input
+        document.getElementById("searchInput").addEventListener("keyup", filterTable);
+
+        // Attach event listener to search button
+        document.getElementById("searchButton").addEventListener("click", filterTable);
+
+        // Function to sort table
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.querySelector("table");
+            switching = true;
+            // Set the sorting direction to ascending:
+            dir = "asc";
+            /* Make a loop that will continue until
+            no switching has been done: */
+            while (switching) {
+                // Start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /* Loop through all table rows (except the
+                first, which contains table headers): */
+                for (i = 1; i < (rows.length - 1); i++) {
+                    // Start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /* Get the two elements you want to compare,
+                    one from current row and one from the next: */
+                    x = rows[i].getElementsByTagName("td")[n];
+                    y = rows[i + 1].getElementsByTagName("td")[n];
+                    /* Check if the two rows should switch place,
+                    based on the direction, asc or desc: */
+                    if (dir === "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir === "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    /* If a switch has been marked, make the switch
+                    and mark that a switch has been done: */
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    // Each time a switch is done, increase this count by 1:
+                    switchcount++;
+                } else {
+                    /* If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again. */
+                    if (switchcount === 0 && dir === "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+}
