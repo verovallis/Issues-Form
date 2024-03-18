@@ -2,6 +2,7 @@
 @{
 }
 
+<<<<<<< HEAD
 <style>
     .table-row-content {
         max-height: 70px; /* Set your desired maximum height */
@@ -11,6 +12,10 @@
 
 <h2 class="text-center mb-5">Admin : Form List</h2>
 
+=======
+<h2 class="text-center mb-5">Admin : Form List</h2>
+
+>>>>>>> d332783feab67a7ba4a5cefe21c14be1503f2eae
 <div class="row mb-3">
     <div class="col">
         <a class="btn btn-primary" asp-controller="Form" asp-action="Create">New Request</a>
@@ -56,6 +61,7 @@
                 <td>@form.Category</td>
                 <td>@form.Building</td>
                 <td>@form.Company</td>
+<<<<<<< HEAD
                 <td>
                     <div class="table-row-content">
                         <span>@form.Description</span>
@@ -63,6 +69,11 @@
                 </td>
                 <td><img src="/form/@form.Attachment" width="100" /></td>
                 <td>@form.CreatedAt.ToString("HH:mm:ss dd/MM/yyyy")</td>
+=======
+                <td>@form.Description</td>
+                <td><img src="/form/@form.Attachment" width="100" /></td>
+                <td>@form.CreatedAt.ToString("dd/MM/yyyy")</td>
+>>>>>>> d332783feab67a7ba4a5cefe21c14be1503f2eae
                 <td>@form.Status</td>
                 <td>@form.AdminComment</td>
                 <td>

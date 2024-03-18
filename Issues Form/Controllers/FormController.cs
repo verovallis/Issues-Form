@@ -200,6 +200,7 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
+<<<<<<< HEAD
             // Update to database
             form.Status = formDto.Status;
             form.AdminComment = formDto.AdminComment;
@@ -224,6 +225,32 @@ namespace Issues_Form.Controllers
                         $"<br>To ensure we're on the same page, we've outlined a few comments and questions below:" +
                         $"<br><br>Issues Status: {form.Status}" +
                         $"<br>From Admin: {form.AdminComment}<br><br>";
+=======
+
+            form.Status = formDto.Status;
+            form.AdminComment = formDto.AdminComment;
+
+            context.SaveChanges();
+
+            string defaultSender = "robin28@student.ub.ac.id";
+            string defaultRecipient = "robin28@student.ub.ac.id";
+            string subject = "Issues Form Submission: " + formDto.Subject;
+            string body = $"Dear {formDto.Name}," +
+                        $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
+                        $"Report ID: {form.Id}<br>" +
+                        $"Name: {formDto.Name}<br>" +
+                        $"Email: {formDto.Email}<br>" +
+                        $"Phone Number: {formDto.PhoneNumber}<br>" +
+                        $"Subject: {formDto.Subject}" +
+                        $"<br>Category: {formDto.Category}" +
+                        $"<br>Building: {formDto.Building}" +
+                        $"<br>Company: {formDto.Company}" +
+                        $"<br>Description: {formDto.Description}" +
+                        $"<br><br>Thank you for your patience. After investigating this issue, we have identified some areas requiring clarification." +
+                        $"<br>To ensure we're on the same page, we've outlined a few comments and questions below:" +
+                        $"<br><br>Issues Status: {formDto.Status}"+
+                        $"<br>From Admin: {formDto.AdminComment}<br><br>";
+>>>>>>> d332783feab67a7ba4a5cefe21c14be1503f2eae
 
             // Call SendMail method
             SendMail(new Mail
