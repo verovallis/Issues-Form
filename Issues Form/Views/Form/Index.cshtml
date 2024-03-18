@@ -2,6 +2,13 @@
 @{
 }
 
+<style>
+    .table-row-content {
+        max-height: 70px; /* Set your desired maximum height */
+        overflow: hidden;
+    }
+</style>
+
 <h2 class="text-center mb-5">Admin : Form List</h2>
 
 <div class="row mb-3">
@@ -49,9 +56,13 @@
                 <td>@form.Category</td>
                 <td>@form.Building</td>
                 <td>@form.Company</td>
-                <td>@form.Description</td>
+                <td>
+                    <div class="table-row-content">
+                        <span>@form.Description</span>
+                    </div>
+                </td>
                 <td><img src="/form/@form.Attachment" width="100" /></td>
-                <td>@form.CreatedAt.ToString("dd/MM/yyyy")</td>
+                <td>@form.CreatedAt.ToString("HH:mm dd/MM/yyyy")</td>
                 <td>@form.Status</td>
                 <td>@form.AdminComment</td>
                 <td>
