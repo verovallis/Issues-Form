@@ -119,11 +119,11 @@ namespace Issues_Form.Controllers
                         $"Name: {formDto.Name}<br>" +
                         $"Email: {formDto.Email}<br>" +
                         $"Phone Number: {formDto.PhoneNumber}<br>" +
-                        $"Subject: {formDto.Subject}" +
-                        $"<br>Category: {formDto.Category}" +
-                        $"<br>Building: {formDto.Building}" +
-                        $"<br>Company: {formDto.Company}" +
-                        $"<br>Description: {formDto.Description}" +
+                        $"Subject: {formDto.Subject}<br>" +
+                        $"Category: {formDto.Category}<br>" +
+                        $"Location: {formDto.Building}<br>" +
+                        $"Company: {formDto.Company}<br>" +
+                        $"Description: {formDto.Description}" +
                         $"<br><br>We apologize for any inconvenience caused and appreciate your report. Our team has initiated an investigation process to identify the root cause of this issue and is actively working to rectify it. Should further assistance be required, our team members will reach out to you promptly to provide additional support in resolving this matter." +
                         $"<br><br>Thank you for your patience and understanding.<br><br>";
             
@@ -238,7 +238,7 @@ namespace Issues_Form.Controllers
                         $"Phone Number: {form.PhoneNumber}<br>" +
                         $"Subject: {form.Subject}<br>" +
                         $"Category: {form.Category}<br>" +
-                        $"Building: {form.Building}<br>" +
+                        $"Location: {form.Building}<br>" +
                         $"Company: {form.Company}<br>" +
                         $"Description: {form.Description}" +
                         $"<br><br>Thank you for your patience. After investigating this issue, we have identified some areas requiring clarification." +
