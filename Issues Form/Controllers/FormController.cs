@@ -1,14 +1,9 @@
 ﻿using Issues_Form.Models;
 using Issues_Form.Services;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging.Console;
-using Microsoft.SqlServer.Server;
-using Issues_Form.Models;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
 
 namespace Issues_Form.Controllers
 {
@@ -191,8 +186,6 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
-
-
             //create formDto from form
             var formDto = new FormDto()
             {
@@ -212,6 +205,9 @@ namespace Issues_Form.Controllers
             ViewData["CreatedAt"] = form.CreatedAt;
             ViewData["Status"] = form.Status;
             ViewData["AdminComment"] = form.AdminComment;
+            ViewData["Categories"] = form.Category;
+            ViewData["Buildings"] = form.Building;
+            ViewData["Companies"] = form.Company;
 
             return View(formDto);
         }
@@ -224,7 +220,6 @@ namespace Issues_Form.Controllers
             {
                 return RedirectToAction("Index", "Form");
             }
-
 
             //replace or add the status and AdminComment database
             form.Status = formDto.Status;
@@ -263,7 +258,6 @@ namespace Issues_Form.Controllers
 
             return RedirectToAction("Index", "Form");
         }
-
         public IActionResult Delete(int id)
         {
             var form = context.Form.Find(id);
@@ -273,15 +267,14 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
-
             string finalPath = environment.WebRootPath + "/form/" + form.Attachment;
             if (System.IO.File.Exists(finalPath))
             {
-                System.IO.File.Delete(finalPath); // Delete associated file if it exists
+                System.IO.File.Delete(finalPath);
             }
 
             context.Form.Remove(form);
-            context.SaveChanges(); // Remove form entry from the database
+            context.SaveChanges();
 
             return RedirectToAction("Index", "Form");
         }
