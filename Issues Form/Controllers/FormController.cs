@@ -4,11 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Mvc.Rendering;
-<<<<<<< Updated upstream
-=======
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
->>>>>>> Stashed changes
 
 namespace Issues_Form.Controllers
 {
