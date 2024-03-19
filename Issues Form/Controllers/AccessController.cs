@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Issues_Form.Models;
 using Microsoft.AspNetCore.Authorization;
 
@@ -28,8 +29,10 @@ namespace Issues_Form.Controllers // Change the namespace from Models to Control
             // Check if the user is already logged in
             ClaimsPrincipal claimUser = HttpContext.User;
             if (claimUser.Identity != null && claimUser.Identity.IsAuthenticated)
-                return RedirectToAction("Create", "Form");
-
+                if (claimUser.IsInRole("Admin"))
+                    return RedirectToAction("Edit", "Form");
+                else if (claimUser.IsInRole("User"))
+                    return RedirectToAction("Create", "Form");
             return View();
         }
 
@@ -56,6 +59,7 @@ namespace Issues_Form.Controllers // Change the namespace from Models to Control
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity), properties);
 
+<<<<<<< Updated upstream
                 return RedirectToAction("Index", "Form"); // Redirect to Index page
             }
             else if (modelLogin.Email == "user@inchcape.co.id" &&
@@ -66,6 +70,18 @@ namespace Issues_Form.Controllers // Change the namespace from Models to Control
                     new Claim(ClaimTypes.NameIdentifier, modelLogin.Email),
                     new Claim("OtherProperties", "Example Role" )
                 };
+=======
+        return RedirectToAction("Edit", "Form");
+    }
+    else if(modelLogin.Email == "user@inchcape.co.id" &&
+        modelLogin.Password == "Inchcape1234$")
+    {
+        // For regular user login
+        List<Claim> claims = new List<Claim>() {
+            new Claim(ClaimTypes.NameIdentifier, modelLogin.Email),
+            new Claim(ClaimTypes.Role, "User" )
+        };
+>>>>>>> Stashed changes
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
                     CookieAuthenticationDefaults.AuthenticationScheme
@@ -78,6 +94,7 @@ namespace Issues_Form.Controllers // Change the namespace from Models to Control
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity), properties);
 
+<<<<<<< Updated upstream
                 return RedirectToAction("Create", "Form"); // Redirect to Create page
             }
             else
@@ -86,5 +103,27 @@ namespace Issues_Form.Controllers // Change the namespace from Models to Control
                 return View();
             }
         }
+=======
+        return RedirectToAction("Create", "Form");
+    }
+    else
+    {
+        ViewData["ValidateMessage"] = "user not found";
+        return View();
+    }
+}
+    [Authorize]
+    public IActionResult AccessDenied()
+    {
+        return View();
+>>>>>>> Stashed changes
+    }
+
+    [HttpPost]
+    public IActionResult RedirectToAccessDenied()
+    {
+        return RedirectToAction("AccessDenied", "Form");
+    }
+
     }
 }

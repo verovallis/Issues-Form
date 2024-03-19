@@ -195,14 +195,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #333; /* Sesuaikan dengan warna yang diinginkan */
+  background-color: #f8f9fa; /* Sesuaikan dengan warna yang diinginkan */
   padding: 10px 20px;
 }
 
 .navbar-logo img {
 
     height: 100%;
-    width: 50%; /* Mengatur lebar gambar menjadi setengah dari lebar aslinya */
+    width: 100%; /* Mengatur lebar gambar menjadi setengah dari lebar aslinya */
     max-height: 20px; /* Membatasi tinggi gambar agar tidak melebihi 40px */
 
 }

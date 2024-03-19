@@ -4,9 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Mvc.Rendering;
+<<<<<<< Updated upstream
+=======
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+>>>>>>> Stashed changes
 
 namespace Issues_Form.Controllers
 {
+    [Authorize]
     public class FormController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -17,11 +23,22 @@ namespace Issues_Form.Controllers
             this.context = context;
             this.environment = environment;
         }
+         public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return RedirectToAction("AccessDenied", "Form");
+            }
             var form = context.Form.OrderByDescending(p => p.Id).ToList();
             return View(form);
         }
+        [Authorize(Roles = "User")]
         public IActionResult Create()
         {
             var form = context.Form.OrderByDescending(p => p.Id).ToList();
@@ -177,8 +194,13 @@ namespace Issues_Form.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return RedirectToAction("AccessDenied", "Form");
+            }
             var form = context.Form.Find(id);
 
             if(form == null)
@@ -215,6 +237,10 @@ namespace Issues_Form.Controllers
         [HttpPost]
         public IActionResult Edit(int id, FormDto formDto)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return RedirectToAction("AccessDenied", "Form");
+            }
             var form = context.Form.Find(id);
             if (form == null)
             {

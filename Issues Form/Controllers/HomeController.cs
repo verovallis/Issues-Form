@@ -27,6 +27,11 @@ namespace Issues_Form.Controllers
             return View();
         }
 
+        // public IActionResult AccessDenied()
+        // {
+        //     return View();
+        // }
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
