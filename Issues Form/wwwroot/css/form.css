@@ -1,14 +1,11 @@
-/* CSS untuk menyesuaikan tampilan form dengan desain yang disediakan */
-/* Add or modify these rules in your existing CSS file */
-
 .box-form {
-  margin-top: 50px; /* Adjust as needed to ensure the form doesn't overlap with the navbar */
-  margin-bottom: 50px; /* Adjust as needed to ensure the form doesn't overlap with the footer */
+  margin-top: 50px; 
+  margin-bottom: 50px; 
   background-color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 100px); /* Adjusted height to accommodate navbar and footer */
+  min-height: calc(100vh - 100px); 
 }
 
 .col-md-8 {
@@ -86,4 +83,30 @@ h2.text-center.mb-5 {
 .col-form-label {
   font-weight: bold;
   font-size: 20px;
+  font-family: system-ui;
+}
+
+.text-center.mb-5 {
+  font-family: system-ui;
+}
+
+.form-control::placeholder {
+  font-family: system-ui;
+}
+
+.form-control {
+  font-family: system-ui;
+}
+
+.form-select option {
+  font-family: system-ui;
+}
+
+.text-danger {
+  font-family: system-ui;
+}
+
+.form-select,
+.form-select option {
+    font-family: system-ui;
 }

@@ -202,8 +202,8 @@
 
 .navbar-logo img {
 
-    height: 50%;
-    width: 50%; /* Mengatur lebar gambar menjadi setengah dari lebar aslinya */
+    height: 70%;
+    width: 70%; /* Mengatur lebar gambar menjadi setengah dari lebar aslinya */
 
 }
 
@@ -230,4 +230,7 @@
 
 .navbar-menu li a:hover {
   color: #ccc; /* Warna teks item-menu saat dihover */
+}
+.nav-link.text-dark {
+  font-family: system-ui;
 }
