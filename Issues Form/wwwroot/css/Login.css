@@ -119,7 +119,7 @@
     position: absolute;
     top: 325px;
     left: 98px;
-    font-family: "Commissioner", Helvetica;
+    font-family: system-ui;
     font-weight: 400;
     color: var(--neutral-900);
     font-size: 16px;
@@ -195,15 +195,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f8f9fa; /* Sesuaikan dengan warna yang diinginkan */
+  background-color: #ffffff; /* Sesuaikan dengan warna yang diinginkan */
   padding: 10px 20px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-logo img {
 
-    height: 100%;
-    width: 100%; /* Mengatur lebar gambar menjadi setengah dari lebar aslinya */
-    max-height: 20px; /* Membatasi tinggi gambar agar tidak melebihi 40px */
+    height: 50%;
+    width: 50%; /* Mengatur lebar gambar menjadi setengah dari lebar aslinya */
 
 }
 

@@ -27,10 +27,11 @@ namespace Issues_Form.Controllers
             return View();
         }
 
-        // public IActionResult AccessDenied()
-        // {
-        //     return View();
-        // }
+       public IActionResult Refresh()
+        {
+            // Redirect kembali ke halaman yang sedang aktif
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
 
         public async Task<IActionResult> Logout()
         {

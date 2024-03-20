@@ -20,6 +20,7 @@ namespace Issues_Form.Controllers
             this.context = context;
             this.environment = environment;
         }
+        [AllowAnonymous]
          public IActionResult AccessDenied()
         {
             return View();

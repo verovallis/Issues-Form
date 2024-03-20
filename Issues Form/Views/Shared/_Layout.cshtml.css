@@ -197,7 +197,7 @@ button.accept-policy {
   position: absolute;
   top: 325px;
   left: 98px;
-  font-family: "Commissioner", Helvetica;
+  font-family: system-ui;
   font-weight: 400;
   color: var(--neutral-900);
   font-size: 16px;
@@ -253,14 +253,14 @@ button.accept-policy {
   background-color: var(--neutral-300);
 }
 
-.form-request-login .image {
+/* .form-request-login .image {
   position: absolute;
   width: 219px;
   height: 87px;
   top: 0;
   left: 40px;
   object-fit: cover;
-}
+} */
 
 /* Navbar */
 .navbar {
@@ -269,14 +269,8 @@ button.accept-policy {
   align-items: center;
   background-color: #333; /* Sesuaikan dengan warna yang diinginkan */
   padding: 10px 20px;
-}
-
-.navbar-logo img {
-
-  height: 10%;
-  width: 10%; /* Mengatur lebar gambar menjadi setengah dari lebar aslinya */
-  max-height: 10px; /* Membatasi tinggi gambar agar tidak melebihi 40px */
-
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 50px;
 }
 
 .navbar-menu {
@@ -303,4 +297,16 @@ button.accept-policy {
 .navbar-menu li a:hover {
   color: #ccc; /* Warna teks item-menu saat dihover */
 }
+
+.navbar-logo img {
+
+  height: 20%;
+  width: 20%; /* Mengatur lebar gambar menjadi setengah dari lebar aslinya */
+
+}
+
+.box-form {
+  margin-top: 50px;
+}
+
 

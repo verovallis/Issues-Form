@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Issues_Form.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Issues_Form.Controllers // Change the namespace from Models to Controllers
 {

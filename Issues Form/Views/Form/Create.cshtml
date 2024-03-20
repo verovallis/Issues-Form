@@ -2,103 +2,116 @@
 @{
 }
 
-<div>
-    <div class="col-md-8 mx-auto rounded border p-3">
-        <h2 class="text-center mb-5">New Request</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Request</title>
+    <link rel="stylesheet" href="~/css/globals.css" />
+    <link rel="stylesheet" href="~/css/styleguide.css" />
+    <link rel="stylesheet" href="~/css/Form.css" />
+</head>
+<body>
+    <div class="box-form">
+        <div class="col-md-8 mx-auto rounded border p-3">
+            <h2 class="text-center mb-5">New Request</h2>
 
-        <form method="post" enctype="multipart/form-data">
-            <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Name</label>
-                <div class="col-md-8">
-                    <input class="form-control" asp-for="Name"/>
-                    <span asp-validation-for="Name" class="text-danger"></span>
+            <form method="post" enctype="multipart/form-data">
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Name</label>
+                    <div class="col-md-8">
+                        <input class="form-control" asp-for="Name" placeholder="Enter your name"/>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Email</label>
-                <div class="col-md-8">
-                    <input class="form-control" asp-for="Email" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Email</label>
+                    <div class="col-md-8">
+                        <input type="email" id="Email" required autocomplete="email" class="form-control" asp-for="Email" placeholder="Enter your email"/>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Phone Number</label>
-                <div class="col-md-8">
-                    <input class="form-control" asp-for="PhoneNumber" />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Phone Number</label>
+                    <div class="col-md-8">
+                        <input class="form-control" asp-for="PhoneNumber" placeholder="Enter your phone number"/>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Subject</label>
-                <div class="col-md-8">
-                    <input class="form-control" asp-for="Subject" />
-                    <span asp-validation-for="Subject" class="text-danger"></span>
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Subject</label>
+                    <div class="col-md-8">
+                        <input class="form-control" asp-for="Subject" placeholder="Enter the subject of problem here" />
+                        <span asp-validation-for="Subject" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
 
-                        <!-- Modify the Category dropdown -->
-            <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Category</label>
-                <div class="col-md-8">
-                    <select class="form-select" asp-for="Category" asp-items="@(ViewBag.Categories as List<SelectListItem>)">
-                        <option value="" selected disabled hidden>Choose this option</option>
-                    </select>
-                    <span asp-validation-for="Category" class="text-danger"></span>
+                <!-- Modify the Category dropdown -->
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Category</label>
+                    <div class="col-md-8">
+                        <select class="form-select" asp-for="Category" asp-items="@(ViewBag.Categories as List<SelectListItem>)">
+                            <option value="" selected disabled hidden>Choose this option</option>
+                        </select>
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Modify the Building dropdown -->
-            <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Building</label>
-                <div class="col-md-8">
-                    <select class="form-select" asp-for="Building" asp-items="@(ViewBag.Buildings as List<SelectListItem>)">
-                        <option value="" selected disabled hidden>Choose this option</option>
-                    </select>
-                    <span asp-validation-for="Building" class="text-danger"></span>
+                <!-- Modify the Building dropdown -->
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Building</label>
+                    <div class="col-md-8">
+                        <select class="form-select" asp-for="Building" asp-items="@(ViewBag.Buildings as List<SelectListItem>)">
+                            <option value="" selected disabled hidden>Choose this option</option>
+                        </select>
+                        <span asp-validation-for="Building" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Modify the Company dropdown -->
-            <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Company</label>
-                <div class="col-md-8">
-                    <select class="form-select" asp-for="Company" asp-items="@(ViewBag.Companies as List<SelectListItem>)">
-                        <option value="" selected disabled hidden>Choose this option</option>
-                    </select>
-                    <span asp-validation-for="Company" class="text-danger"></span>
+                <!-- Modify the Company dropdown -->
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Company</label>
+                    <div class="col-md-8">
+                        <select class="form-select" asp-for="Company" asp-items="@(ViewBag.Companies as List<SelectListItem>)">
+                            <option value="" selected disabled hidden>Choose this option</option>
+                        </select>
+                        <span asp-validation-for="Company" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
 
 
-            <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Description</label>
-                <div class="col-md-8">
-                    <textarea class="form-control" asp-for="Description"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Description</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" asp-for="Description" placeholder="Describe your problem here"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Attach Image (Optional)</label>
-                <div class="col-md-8">
-                    <input class="form-control" asp-for="Attach" />
-                    <span asp-validation-for="Attach" class="text-danger"></span>
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Attach Image (Optional)</label>
+                    <div class="col-md-8">
+                        <input class="form-control" asp-for="Attach" />
+                        <span asp-validation-for="Attach" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="offset-sm-4 col-sm-4 d-grid">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="row">
+                    <div class="offset-sm-4 col-sm-4 d-grid">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    <div class="col-sm-4 d-grid">
+                        <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Logout" role="button">
+                            Cancel
+                        </a>
+                    </div>
                 </div>
-                <div class="col-sm-4 d-grid">
-                    <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Logout" role="button">
-                        Cancel
-                    </a>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
+</body>
+</html>
