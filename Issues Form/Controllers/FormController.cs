@@ -76,9 +76,30 @@ namespace Issues_Form.Controllers
             */
             if (!ModelState.IsValid)
             {
+                var categories = context.Category_Param.Select(c => new SelectListItem
+                {
+                    Value = c.Category_Issues,
+                    Text = c.Category_Issues
+                }).ToList();
+
+                var buildings = context.Building_Param.Select(b => new SelectListItem
+                {
+                    Value = b.Building,
+                    Text = b.Building
+                }).ToList();
+
+                var companies = context.Company_Param.Select(c => new SelectListItem
+                {
+                    Value = c.Company_Name,
+                    Text = c.Company_Name
+                }).ToList();
+
+                ViewBag.Categories = categories;
+                ViewBag.Buildings = buildings;
+                ViewBag.Companies = companies;
+
                 return View(formDto);
             }
-
 
             //save image file
             string newFileName = "AttachIssues_" + formDto.Name + "_" + DateTime.Now.ToString("HHmmss_dd-MM-yyyy");
