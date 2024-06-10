@@ -32,6 +32,25 @@
                         <input type="email" id="Email" required autocomplete="email" class="form-control" asp-for="Email" placeholder="Enter your email"/>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
+<<<<<<< Updated upstream
+=======
+                </div>
+            </div>
+
+                 <div class="row mb-3 question">
+                    <div class="col-md-8">
+                        <input type="checkbox" id="CCRequest" /> CC this request?
+                    </div>
+                </div>
+
+                <!-- CC Email input (hidden by default) -->
+                <div class="row mb-3" id="CCEmailBox" style="display: none;">
+                    <label class="col-sm-4 col-form-label">CC Email</label>
+                    <div class="col-md-8">
+                        <input type="email" id="CCEmail" class="form-control" asp-for="CCEmail" placeholder="Enter CC email"/>
+                        <span class="text-danger" asp-validation-for="CCEmail" id="CCEmailValidation"></span>
+                    </div>
+>>>>>>> Stashed changes
                 </div>
 
                 <div class="row mb-3">
@@ -61,6 +80,21 @@
                     </div>
                 </div>
 
+<<<<<<< Updated upstream
+=======
+                <!-- Modify the Company dropdown -->
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Company<span class="mandatory-text">*</span></label>
+                    <div class="col-md-8">
+                        <select class="form-select" asp-for="Company" asp-items="@(ViewBag.Companies as List<SelectListItem>)">
+                            <option value="" selected disabled hidden>Choose this option</option>
+                        </select>
+                        <span asp-validation-for="Company" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+>>>>>>> Stashed changes
                 <!-- Modify the Building dropdown -->
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Building</label>
@@ -99,6 +133,12 @@
                         <span asp-validation-for="Attach" class="text-danger"></span>
                     </div>
                 </div>
+<<<<<<< Updated upstream
+=======
+                <p class="mandatory">*Please fill in the box; it is mandatory.</p>
+                <p></p>
+                <p></p>
+>>>>>>> Stashed changes
 
                 <div class="row">
                     <div class="offset-sm-4 col-sm-4 d-grid">
@@ -113,5 +153,31 @@
             </form>
         </div>
     </div>
+<<<<<<< Updated upstream
+=======
+    <script>
+        document.getElementById('CCRequest').addEventListener('change', function () {
+            var ccEmailBox = document.getElementById('CCEmailBox');
+            ccEmailBox.style.display = this.checked ? 'block' : 'none';
+
+            // Clear CC Email input and validation message when hiding the box
+            if (!this.checked) {
+                document.getElementById('CCEmail').value = '';
+                document.getElementById('CCEmailValidation').innerText = '';
+            }
+        });
+
+        document.getElementById('CCRequest').addEventListener('change', function () {
+        var ccEmailBox = document.getElementById('CCEmailBox');
+        ccEmailBox.style.display = this.checked ? 'block' : 'none';
+
+        // Clear CC Email input and validation message when hiding the box
+        if (!this.checked) {
+            document.getElementById('CCEmail').value = ''; // Hapus nilai dari kotak input CC Email
+            document.getElementById('CCEmailValidation').innerText = '';
+        }
+    });
+    </script>
+>>>>>>> Stashed changes
 </body>
 </html>
