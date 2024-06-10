@@ -10,6 +10,8 @@ namespace Issues_Form.Models
         [MaxLength(100)]
         public string Email { get; set; } = "";
         [MaxLength(100)]
+        public string? CCEmail { get; set; }
+        [MaxLength(100)]
         public string PhoneNumber { get; set; } = "";
         [MaxLength(100)]
         public string Subject { get; set; } = "";

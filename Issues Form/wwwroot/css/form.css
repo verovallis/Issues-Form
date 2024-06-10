@@ -1,0 +1,112 @@
+.box-form {
+  margin-top: 50px; 
+  margin-bottom: 50px; 
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 100px); 
+}
+
+.col-md-8 {
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+}
+
+.rounded {
+  border-radius: 20px;
+  border: 1px solid var(--neutral-500);
+  box-shadow: 0px 0px 1px #21252914, 0px 2px 2px #2125290f;
+  background-color: #ffffff;
+  padding: 53px 95px;
+}
+
+
+
+.text-center {
+  text-align: center;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--neutral-400);
+  background-color: #f8f9fa;
+}
+
+.form-select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--neutral-400);
+  background-color: #f8f9fa;
+  box-shadow: 0px 0px 1px #21252914, 0px 2px 2px #2125290f;
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--neutral-400);
+  background-color: var(--neutral-100);
+}
+
+.btn {
+  width: 100%;
+  border-radius: 100px;
+  padding: 12px 24px;
+  font-family: var(--body-2-medium-font-family);
+  font-weight: var(--body-2-medium-font-weight);
+  font-size: var(--body-2-medium-font-size);
+  line-height: var(--body-2-medium-line-height);
+  letter-spacing: var(--body-2-medium-letter-spacing);
+}
+
+.btn-primary {
+  background-color: var(--neutral-800);
+  color: #ffffff;
+  border: none;
+}
+
+.btn-outline-primary {
+  background-color: transparent;
+  color: var(--neutral-800);
+  border: 2px solid var(--neutral-800);
+}
+
+h2.text-center.mb-5 {
+  font-size: 2rem; /* Adjust the font size as needed */
+  font-weight: bold;
+}
+.col-form-label {
+  font-weight: bold;
+  font-size: 20px;
+  font-family: system-ui;
+}
+
+.text-center.mb-5 {
+  font-family: system-ui;
+}
+
+.form-control::placeholder {
+  font-family: system-ui;
+}
+
+.form-control {
+  font-family: system-ui;
+}
+
+.form-select option {
+  font-family: system-ui;
+}
+
+.text-danger {
+  font-family: system-ui;
+}
+
+.form-select,
+.form-select option {
+    font-family: system-ui;
+}

@@ -84,39 +84,24 @@
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Category</label>
                 <div class="col-md-8">
-                    <select class="form-select" asp-for="Category" disabled>
-                        <option value='Building'>Building</option>
-                        <option value='Equipment'>Equipment</option>
-                        <option value='Electrical'>Electrical</option>
-                        <option value='Water'>Water</option>
-                    </select>
+                    <input class="form-control" asp-for="Category" readonly />
+                    <span asp-validation-for="Category" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Building</label>
                 <div class="col-md-8">
-                    <select class="form-select" asp-for="Building" disabled>
-                        <option value='1'>1</option>
-                        <option value='2'>2</option>
-                        <option value='3'>3</option>
-                        <option value='4'>4</option>
-                        <option value='5'>5</option>
-                        <option value='6'>6</option>
-                        <option value='7'>7</option>
-                        <option value='8'>8</option>
-                    </select>
+                    <input class="form-control" asp-for="Building" readonly />
+                    <span asp-validation-for="Building" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Company</label>
                 <div class="col-md-8">
-                    <select class="form-select" asp-for="Company" disabled>
-                        <option value='GWM'>GWM</option>
-                        <option value='Mercedez-Benz Indonesia'>Mercedez-Benz Indonesia</option>
-                        <option value='Mercedez-Benz Indonesia - Distribution'>Mercedez-Benz Indonesia - Distribution</option>
-                    </select>
+                    <input class="form-control" asp-for="Company" readonly />
+                    <span asp-validation-for="Company" class="text-danger"></span>
                 </div>
             </div>
 

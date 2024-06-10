@@ -20,3 +20,17 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.navbar-nav.ml-auto {
+  margin-left: auto;
+}
+
+.nav-link.text-dark {
+  font-family: system-ui;
+}
+
+.navbar-logo img {
+  height: 70%;
+  width: 70%;
+}
+

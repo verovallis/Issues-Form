@@ -1,0 +1,236 @@
+.form-request-login {
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .form-request-login .div {
+    background-color: #f8f9fa;
+    width: 1440px;
+    height: 793px;
+    position: relative;
+  }
+  
+  .form-request-login .frame {
+    display: flex;
+    flex-direction: column;
+    width: 1110px;
+    height: 496px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 53px 95px;
+    position: absolute;
+    top: 188px;
+    left: 165px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    border: 1px solid;
+    border-color: var(--neutral-500);
+    box-shadow: 0px 0px 1px #21252914, 0px 2px 2px #2125290f;
+  }
+  
+  .form-request-login .frame-2 {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 21px;
+    position: relative;
+    flex: 0 0 auto;
+    margin-left: -0.5px;
+    margin-right: -0.5px;
+  }
+  
+  .form-request-login .text-wrapper {
+    position: relative;
+    width: 204px;
+    height: 46px;
+    margin-top: -1px;
+    font-family: var(--subtitle-1-font-family);
+    font-weight: var(--subtitle-1-font-weight);
+    color: #000000;
+    font-size: var(--subtitle-1-font-size);
+    letter-spacing: var(--subtitle-1-letter-spacing);
+    line-height: var(--subtitle-1-line-height);
+    white-space: nowrap;
+    font-style: var(--subtitle-1-font-style);
+  }
+  
+  .form-request-login .input-medium {
+    display: flex;
+    width: 921px;
+    height: 49px;
+    align-items: flex-start;
+    padding: 10px 16px;
+    position: relative;
+    background-color: var(--neutral-100);
+    border-radius: 8px;
+    border: 1px solid;
+    border-color: var(--neutral-400);
+    flex: 1;
+    margin-top: -1px;
+    opacity: 0.56;
+    font-family: var(--body-2-regular-font-family);
+    font-weight: var(--body-2-regular-font-weight);
+    color: var(--neutral-900);
+    font-size: var(--body-2-regular-font-size);
+    letter-spacing: var(--body-2-regular-letter-spacing);
+    line-height: var(--body-2-regular-line-height);
+    font-style: var(--body-2-regular-font-style);
+  }
+  
+  .form-request-login .text-wrapper-2 {
+    position: relative;
+    width: 204px;
+    height: 46px;
+    font-family: var(--subtitle-1-font-family);
+    font-weight: var(--subtitle-1-font-weight);
+    color: #000000;
+    font-size: var(--subtitle-1-font-size);
+    letter-spacing: var(--subtitle-1-letter-spacing);
+    line-height: var(--subtitle-1-line-height);
+    white-space: nowrap;
+    font-style: var(--subtitle-1-font-style);
+  }
+  
+  .form-request-login .primary-large {
+    display: flex;
+    width: 220px;
+    height: 58px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    position: relative;
+    background-color: var(--neutral-800);
+    border-radius: 100px;
+    font-family: var(--body-2-medium-font-family);
+    font-weight: var(--body-2-medium-font-weight);
+    color: #ffffff;
+    font-size: var(--body-2-medium-font-size);
+    text-align: center;
+    letter-spacing: var(--body-2-medium-letter-spacing);
+    line-height: var(--body-2-medium-line-height);
+    white-space: nowrap;
+    font-style: var(--body-2-medium-font-style);
+  }
+  
+  .form-request-login .text-wrapper-3 {
+    position: absolute;
+    top: 325px;
+    left: 98px;
+    font-family: system-ui;
+    font-weight: 400;
+    color: var(--neutral-900);
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 24px;
+    text-decoration: underline;
+    white-space: nowrap;
+  }
+  
+  .form-request-login .text-wrapper-4 {
+    position: absolute;
+    width: 132px;
+    top: 108px;
+    left: 162px;
+    font-family: var(--heading-2-font-family);
+    font-weight: var(--heading-2-font-weight);
+    color: #000000;
+    font-size: var(--heading-2-font-size);
+    letter-spacing: var(--heading-2-letter-spacing);
+    line-height: var(--heading-2-line-height);
+    white-space: nowrap;
+    font-style: var(--heading-2-font-style);
+  }
+  
+  .form-request-login .overlap-group {
+    position: absolute;
+    width: 1440px;
+    height: 87px;
+    top: 0;
+    left: 0;
+  }
+  
+  .form-request-login .menu-wrapper {
+    position: absolute;
+    width: 1440px;
+    height: 80px;
+    top: 0;
+    left: 0;
+  }
+  
+  .form-request-login .menu {
+    height: 80px;
+    background-color: #f8f9fa;
+    backdrop-filter: blur(40px) brightness(100%);
+    -webkit-backdrop-filter: blur(40px) brightness(100%);
+  }
+  
+  .form-request-login .center {
+    position: relative;
+    width: 1440px;
+    height: 1px;
+    top: 79px;
+    background-color: var(--neutral-300);
+  }
+  
+  .form-request-login .image {
+    position: absolute;
+    width: 219px;
+    height: 87px;
+    top: 0;
+    object-fit: cover;
+  }
+  
+  .image {
+    position: absolute;
+    width: 219px;
+    height: 87px;
+    top: 0;
+  }
+
+  /* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff; /* Sesuaikan dengan warna yang diinginkan */
+  padding: 10px 20px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-logo img {
+
+    height: 70%;
+    width: 70%; /* Mengatur lebar gambar menjadi setengah dari lebar aslinya */
+
+}
+
+.navbar-menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-menu li {
+  display: inline-block;
+  margin-right: 20px; /* Jarak antara item-menu */
+}
+
+.navbar-menu li:last-child {
+  margin-right: 0; /* Menghapus margin kanan pada item-menu terakhir */
+}
+
+.navbar-menu li a {
+  color: #fff; /* Warna teks item-menu */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar-menu li a:hover {
+  color: #ccc; /* Warna teks item-menu saat dihover */
+}
+.nav-link.text-dark {
+  font-family: system-ui;
+}

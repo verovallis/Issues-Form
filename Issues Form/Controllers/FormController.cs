@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.SqlServer.Server;
-using Issues_Form.Models;
 using System.Net.Mail;
 using System.Net;
 
@@ -14,6 +13,9 @@ namespace Issues_Form.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IWebHostEnvironment environment;
+        private readonly string defaultSender = "robin28@student.ub.ac.id";
+        private readonly string defaultRecipient = "robin28@student.ub.ac.id";
+        private readonly string defaultCC = "valliskanw@student.ub.ac.id";
 
         public FormController(ApplicationDbContext context, IWebHostEnvironment environment)
         {
@@ -45,24 +47,27 @@ namespace Issues_Form.Controllers
                 return View(formDto);
             }
 
-
-            //save image file
+            //save file
             string newFileName = "AttachIssues_" + formDto.Name + "_" + DateTime.Now.ToString("HHmmss_dd-MM-yyyy");
             string finalAttachPath; //for email attachment only
+
             if (formDto.Attach != null)
             {
-
-                if (!formDto.Attach.ContentType.StartsWith("image/") || formDto.Attach.Length > (10 * 1024 * 1024)) // max 10 MB file size
+                if (formDto.Attach.Length > (10 * 1024 * 1024)) // max 10 MB file size
                 {
-                    ModelState.AddModelError("Attach", "File must be a valid image with a maximum size of 10MB.");
+                    ModelState.AddModelError("Attach", "File size cannot exceed 10MB.");
                     return View(formDto);
                 }
 
                 newFileName += Path.GetExtension(formDto.Attach!.FileName);
 
-                string imageFullPath = environment.WebRootPath + "/form/" + newFileName;
-                finalAttachPath = imageFullPath;
-                using (var stream = System.IO.File.Create(imageFullPath))
+                string attachDirectory = environment.WebRootPath + "/form/";
+                Directory.CreateDirectory(attachDirectory); // Create directory if not exists
+
+                string attachFullPath = Path.Combine(attachDirectory, newFileName);
+                finalAttachPath = attachFullPath;
+
+                using (var stream = System.IO.File.Create(attachFullPath))
                 {
                     formDto.Attach.CopyTo(stream);
                 }
@@ -78,6 +83,7 @@ namespace Issues_Form.Controllers
             {
                 Name = formDto.Name,
                 Email = formDto.Email,
+                CCEmail = formDto.CCEmail,
                 PhoneNumber = formDto.PhoneNumber,
                 Subject = formDto.Subject,
                 Category = formDto.Category,
@@ -99,6 +105,7 @@ namespace Issues_Form.Controllers
                         $"Report ID: {form.Id}<br>" +
                         $"Name: {formDto.Name}<br>" +
                         $"Email: {formDto.Email}<br>" +
+                        $"CC Email: {formDto.CCEmail}<br>" +
                         $"Phone Number: {formDto.PhoneNumber}<br>" +
                         $"Subject: {formDto.Subject}" +
                         $"<br>Category: {formDto.Category}" +
@@ -113,6 +120,7 @@ namespace Issues_Form.Controllers
             {
                 From = defaultSender,
                 To = $"{formDto.Email},{defaultRecipient}",
+                CCEmail = $"{formDto.CCEmail},{defaultCC}",
                 Subject = subject,
                 Body = body,
                 AttachmentPath = finalAttachPath
@@ -125,7 +133,6 @@ namespace Issues_Form.Controllers
         public ActionResult SendMail(Issues_Form.Models.Mail model)
         {
             MailMessage mailMessage = new MailMessage(model.From, model.To);
-            
             mailMessage.Subject = model.Subject;
             // Create a multi-part email with both HTML and plain text bodies
             AlternateView htmlView = AlternateView.CreateAlternateViewFromString(model.Body, null, "text/html");
@@ -173,6 +180,7 @@ namespace Issues_Form.Controllers
             {
                 Name = form.Name,
                 Email = form.Email,
+                CCEmail = form.CCEmail,
                 PhoneNumber = form.PhoneNumber,
                 Subject = form.Subject,
                 Category = form.Category,
@@ -215,6 +223,7 @@ namespace Issues_Form.Controllers
                         $"Report ID: {form.Id}<br>" +
                         $"Name: {form.Name}<br>" +
                         $"Email: {form.Email}<br>" +
+                        $"CC Email: {form.CCEmail}<br>" +
                         $"Phone Number: {form.PhoneNumber}<br>" +
                         $"Subject: {form.Subject}<br>" +
                         $"Category: {form.Category}<br>" +
@@ -231,6 +240,7 @@ namespace Issues_Form.Controllers
             {
                 From = defaultSender,
                 To = $"{formDto.Email},{defaultRecipient}",
+                CCEmail = $"{formDto.CCEmail},{defaultCC}",
                 Subject = subject,
                 Body = body,
                 AttachmentPath = "-"
