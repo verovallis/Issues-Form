@@ -9,6 +9,8 @@ namespace Issues_Form.Models
         [Required, MaxLength(100)]
         public string Email { get; set; } = "";
         [Required, MaxLength(100)]
+        public string? CCEmail { get; set; }
+        [MaxLength(100)]
         public string PhoneNumber { get; set; } = "";
         [Required, MaxLength(100)]
         public string Subject { get; set; } = "";
@@ -25,21 +27,4 @@ namespace Issues_Form.Models
         public string? AdminComment { get; set; } = "";
 
     }
-    public class Category_Param
-    {
-        public int Id { get; set; }
-        public string? Category_Issues { get; set; }
-    }
-    public class Building_Param
-     {
-        public int Id { get; set; }
-        public string? Building { get; set; }
-    }
-
-    public class Company_Param
-    {
-        public int Id { get; set; }
-        public string? Company_Name { get; set; }
-    }
 }
-

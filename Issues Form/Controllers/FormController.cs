@@ -1,15 +1,14 @@
 ﻿using Issues_Form.Models;
 using Issues_Form.Services;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.SqlServer.Server;
 using System.Net.Mail;
 using System.Net;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Issues_Form.Controllers
 {
-    [Authorize]
     public class FormController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -23,48 +22,14 @@ namespace Issues_Form.Controllers
             this.context = context;
             this.environment = environment;
         }
-        [AllowAnonymous]
-         public IActionResult AccessDenied()
-        {
-            return View();
-        }
-
-        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            if (!User.IsInRole("Admin"))
-            {
-                return RedirectToAction("AccessDenied", "Form");
-            }
             var form = context.Form.OrderByDescending(p => p.Id).ToList();
             return View(form);
         }
-        [Authorize(Roles = "User")]
         public IActionResult Create()
         {
             var form = context.Form.OrderByDescending(p => p.Id).ToList();
-            var categories = context.Category_Param.Select(c => new SelectListItem
-            {
-                Value = c.Category_Issues,
-                Text = c.Category_Issues
-            }).ToList();
-
-            var buildings = context.Building_Param.Select(b => new SelectListItem
-            {
-                Value = b.Building,
-                Text = b.Building
-            }).ToList();
-
-            var companies = context.Company_Param.Select(c => new SelectListItem
-            {
-                Value = c.Company_Name,
-                Text = c.Company_Name
-            }).ToList();
-
-            ViewBag.Categories = categories;
-            ViewBag.Buildings = buildings;
-            ViewBag.Companies = companies;
-
             return View();
         }
 
@@ -79,48 +44,30 @@ namespace Issues_Form.Controllers
             */
             if (!ModelState.IsValid)
             {
-                var categories = context.Category_Param.Select(c => new SelectListItem
-                {
-                    Value = c.Category_Issues,
-                    Text = c.Category_Issues
-                }).ToList();
-
-                var buildings = context.Building_Param.Select(b => new SelectListItem
-                {
-                    Value = b.Building,
-                    Text = b.Building
-                }).ToList();
-
-                var companies = context.Company_Param.Select(c => new SelectListItem
-                {
-                    Value = c.Company_Name,
-                    Text = c.Company_Name
-                }).ToList();
-
-                ViewBag.Categories = categories;
-                ViewBag.Buildings = buildings;
-                ViewBag.Companies = companies;
-
                 return View(formDto);
             }
 
             //save file
             string newFileName = "AttachIssues_" + formDto.Name + "_" + DateTime.Now.ToString("HHmmss_dd-MM-yyyy");
             string finalAttachPath; //for email attachment only
+
             if (formDto.Attach != null)
             {
-
-                if (!formDto.Attach.ContentType.StartsWith("image/") || formDto.Attach.Length > (10 * 1024 * 1024)) // max 10 MB file size
+                if (formDto.Attach.Length > (10 * 1024 * 1024)) // max 10 MB file size
                 {
-                    ModelState.AddModelError("Attach", "File must be a valid image with a maximum size of 10MB.");
+                    ModelState.AddModelError("Attach", "File size cannot exceed 10MB.");
                     return View(formDto);
                 }
 
                 newFileName += Path.GetExtension(formDto.Attach!.FileName);
 
-                string imageFullPath = environment.WebRootPath + "/form/" + newFileName;
-                finalAttachPath = imageFullPath;
-                using (var stream = System.IO.File.Create(imageFullPath))
+                string attachDirectory = environment.WebRootPath + "/form/";
+                Directory.CreateDirectory(attachDirectory); // Create directory if not exists
+
+                string attachFullPath = Path.Combine(attachDirectory, newFileName);
+                finalAttachPath = attachFullPath;
+
+                using (var stream = System.IO.File.Create(attachFullPath))
                 {
                     formDto.Attach.CopyTo(stream);
                 }
@@ -136,6 +83,7 @@ namespace Issues_Form.Controllers
             {
                 Name = formDto.Name,
                 Email = formDto.Email,
+                CCEmail = formDto.CCEmail,
                 PhoneNumber = formDto.PhoneNumber,
                 Subject = formDto.Subject,
                 Category = formDto.Category,
@@ -149,19 +97,21 @@ namespace Issues_Form.Controllers
             context.Form.Add(form);
             context.SaveChanges();
 
-            // pre-call SendMail method
+            string defaultSender = "robin28@student.ub.ac.id";
+            string defaultRecipient = "robin28@student.ub.ac.id";
             string subject = "Issues Form Submission: " + formDto.Subject;
             string body = $"Dear {formDto.Name}," +
                         $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
                         $"Report ID: {form.Id}<br>" +
                         $"Name: {formDto.Name}<br>" +
                         $"Email: {formDto.Email}<br>" +
+                        $"CC Email: {formDto.CCEmail}<br>" +
                         $"Phone Number: {formDto.PhoneNumber}<br>" +
-                        $"Subject: {formDto.Subject}<br>" +
-                        $"Category: {formDto.Category}<br>" +
-                        $"Location: {formDto.Building}<br>" +
-                        $"Company: {formDto.Company}<br>" +
-                        $"Description: {formDto.Description}" +
+                        $"Subject: {formDto.Subject}" +
+                        $"<br>Category: {formDto.Category}" +
+                        $"<br>Building: {formDto.Building}" +
+                        $"<br>Company: {formDto.Company}" +
+                        $"<br>Description: {formDto.Description}" +
                         $"<br><br>We apologize for any inconvenience caused and appreciate your report. Our team has initiated an investigation process to identify the root cause of this issue and is actively working to rectify it. Should further assistance be required, our team members will reach out to you promptly to provide additional support in resolving this matter." +
                         $"<br><br>Thank you for your patience and understanding.<br><br>";
             
@@ -170,6 +120,7 @@ namespace Issues_Form.Controllers
             {
                 From = defaultSender,
                 To = $"{formDto.Email},{defaultRecipient}",
+                CCEmail = $"{formDto.CCEmail},{defaultCC}",
                 Subject = subject,
                 Body = body,
                 AttachmentPath = finalAttachPath
@@ -182,7 +133,6 @@ namespace Issues_Form.Controllers
         public ActionResult SendMail(Issues_Form.Models.Mail model)
         {
             MailMessage mailMessage = new MailMessage(model.From, model.To);
-            
             mailMessage.Subject = model.Subject;
             // Create a multi-part email with both HTML and plain text bodies
             AlternateView htmlView = AlternateView.CreateAlternateViewFromString(model.Body, null, "text/html");
@@ -215,13 +165,8 @@ namespace Issues_Form.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
-            if (!User.IsInRole("Admin"))
-            {
-                return RedirectToAction("AccessDenied", "Form");
-            }
             var form = context.Form.Find(id);
 
             if(form == null)
@@ -229,11 +174,13 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
+
             //create formDto from form
             var formDto = new FormDto()
             {
                 Name = form.Name,
                 Email = form.Email,
+                CCEmail = form.CCEmail,
                 PhoneNumber = form.PhoneNumber,
                 Subject = form.Subject,
                 Category = form.Category,
@@ -248,9 +195,6 @@ namespace Issues_Form.Controllers
             ViewData["CreatedAt"] = form.CreatedAt;
             ViewData["Status"] = form.Status;
             ViewData["AdminComment"] = form.AdminComment;
-            ViewData["Categories"] = form.Category;
-            ViewData["Buildings"] = form.Building;
-            ViewData["Companies"] = form.Company;
 
             return View(formDto);
         }
@@ -258,15 +202,12 @@ namespace Issues_Form.Controllers
         [HttpPost]
         public IActionResult Edit(int id, FormDto formDto)
         {
-            if (!User.IsInRole("Admin"))
-            {
-                return RedirectToAction("AccessDenied", "Form");
-            }
             var form = context.Form.Find(id);
             if (form == null)
             {
                 return RedirectToAction("Index", "Form");
             }
+
 
             //replace or add the status and AdminComment database
             form.Status = formDto.Status;
@@ -274,16 +215,19 @@ namespace Issues_Form.Controllers
             context.SaveChanges();
 
             // pre-call SendMail method
+            string defaultSender = "robin28@student.ub.ac.id";
+            string defaultRecipient = "robin28@student.ub.ac.id";
             string subject = "Issues Form Submission: " + form.Subject;
             string body = $"Dear {form.Name}," +
                         $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
                         $"Report ID: {form.Id}<br>" +
                         $"Name: {form.Name}<br>" +
                         $"Email: {form.Email}<br>" +
+                        $"CC Email: {form.CCEmail}<br>" +
                         $"Phone Number: {form.PhoneNumber}<br>" +
                         $"Subject: {form.Subject}<br>" +
                         $"Category: {form.Category}<br>" +
-                        $"Location: {form.Building}<br>" +
+                        $"Building: {form.Building}<br>" +
                         $"Company: {form.Company}<br>" +
                         $"Description: {form.Description}" +
                         $"<br><br>Thank you for your patience. After investigating this issue, we have identified some areas requiring clarification." +
@@ -296,6 +240,7 @@ namespace Issues_Form.Controllers
             {
                 From = defaultSender,
                 To = $"{formDto.Email},{defaultRecipient}",
+                CCEmail = $"{formDto.CCEmail},{defaultCC}",
                 Subject = subject,
                 Body = body,
                 AttachmentPath = "-"
@@ -303,6 +248,7 @@ namespace Issues_Form.Controllers
 
             return RedirectToAction("Index", "Form");
         }
+
         public IActionResult Delete(int id)
         {
             var form = context.Form.Find(id);
@@ -312,14 +258,15 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
+
             string finalPath = environment.WebRootPath + "/form/" + form.Attachment;
             if (System.IO.File.Exists(finalPath))
             {
-                System.IO.File.Delete(finalPath);
+                System.IO.File.Delete(finalPath); // Delete associated file if it exists
             }
 
             context.Form.Remove(form);
-            context.SaveChanges();
+            context.SaveChanges(); // Remove form entry from the database
 
             return RedirectToAction("Index", "Form");
         }
