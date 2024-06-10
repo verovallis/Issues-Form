@@ -16,10 +16,7 @@ namespace Issues_Form.Controllers
         private readonly IWebHostEnvironment environment;
         private readonly string defaultSender = "robin28@student.ub.ac.id";
         private readonly string defaultRecipient = "robin28@student.ub.ac.id";
-<<<<<<< Updated upstream
-=======
         private readonly string defaultCC = "valliskanw@student.ub.ac.id";
->>>>>>> Stashed changes
 
         public FormController(ApplicationDbContext context, IWebHostEnvironment environment)
         {
@@ -107,11 +104,7 @@ namespace Issues_Form.Controllers
                 return View(formDto);
             }
 
-<<<<<<< Updated upstream
-            //save image file
-=======
             //save file
->>>>>>> Stashed changes
             string newFileName = "AttachIssues_" + formDto.Name + "_" + DateTime.Now.ToString("HHmmss_dd-MM-yyyy");
             string finalAttachPath; //for email attachment only
             if (formDto.Attach != null)
