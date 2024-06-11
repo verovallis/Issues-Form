@@ -150,8 +150,7 @@ namespace Issues_Form.Controllers
             SendMail(new Mail
             {
                 From = defaultSender,
-                To = $"{formDto.Email},{defaultRecipient}",
-                CCEmail = $"{formDto.CCEmail},{defaultCC}",
+                To = $"{formDto.Email},{defaultRecipient},{formDto.CCEmail}",
                 Subject = subject,
                 Body = body,
                 AttachmentPath = finalAttachPath
