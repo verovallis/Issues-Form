@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.SqlServer.Server;
 using System.Net.Mail;
 using System.Net;
 
 namespace Issues_Form.Controllers
 {
+    [Authorize]
     public class FormController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -23,11 +26,23 @@ namespace Issues_Form.Controllers
             this.context = context;
             this.environment = environment;
         }
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return RedirectToAction("AccessDenied", "Form");
+            }
             var form = context.Form.OrderByDescending(p => p.Id).ToList();
             return View(form);
         }
+
+        [Authorize(Roles = "User")]
         public IActionResult Create()
         {
             ViewBag.Categories = context.Category_Param.Select(c => new SelectListItem
@@ -53,99 +68,116 @@ namespace Issues_Form.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(FormDto formDto)
+        [Authorize(Roles = "User")]
+        public IActionResult Create(FormDto formDto, bool ccRequest)
         {
-            /*
-            if (formDto.Attach == null)
+            if (ccRequest && string.IsNullOrWhiteSpace(formDto.CCEmail))
             {
-                ModelState.AddModelError("ImageFile", "The image file is required");
-            }
-            */
-            if (!ModelState.IsValid)
-            {
-                return View(formDto);
+                ModelState.AddModelError("CCEmail", "CC Email is required when CC this request is checked.");
             }
 
-            //save file
-            string newFileName = "AttachIssues_" + formDto.Name + "_" + DateTime.Now.ToString("HHmmss_dd-MM-yyyy");
-            string finalAttachPath; //for email attachment only
-
-            if (formDto.Attach != null)
+            if (ModelState.IsValid)
             {
-                if (formDto.Attach.Length > (10 * 1024 * 1024)) // max 10 MB file size
+                // Save or process the data
+                string newFileName = "AttachIssues_" + formDto.Name + "_" + DateTime.Now.ToString("HHmmss_dd-MM-yyyy");
+                string finalAttachPath; //for email attachment only
+
+                if (formDto.Attach != null)
                 {
-                    ModelState.AddModelError("Attach", "File size cannot exceed 10MB.");
-                    return View(formDto);
+                    if (formDto.Attach.Length > (10 * 1024 * 1024)) // max 10 MB file size
+                    {
+                        ModelState.AddModelError("Attach", "File size cannot exceed 10MB.");
+                        return View(formDto);
+                    }
+
+                    newFileName += Path.GetExtension(formDto.Attach!.FileName);
+
+                    string attachDirectory = environment.WebRootPath + "/form/";
+                    Directory.CreateDirectory(attachDirectory); // Create directory if not exists
+
+                    string attachFullPath = Path.Combine(attachDirectory, newFileName);
+                    finalAttachPath = attachFullPath;
+
+                    using (var stream = System.IO.File.Create(attachFullPath))
+                    {
+                        formDto.Attach.CopyTo(stream);
+                    }
+                }
+                else
+                {
+                    newFileName = "-";
+                    finalAttachPath = "-";
                 }
 
-                newFileName += Path.GetExtension(formDto.Attach!.FileName);
-
-                string attachDirectory = environment.WebRootPath + "/form/";
-                Directory.CreateDirectory(attachDirectory); // Create directory if not exists
-
-                string attachFullPath = Path.Combine(attachDirectory, newFileName);
-                finalAttachPath = attachFullPath;
-
-                using (var stream = System.IO.File.Create(attachFullPath))
+                // Save the new product in the database
+                Form form = new Form()
                 {
-                    formDto.Attach.CopyTo(stream);
-                }
+                    Name = formDto.Name,
+                    Email = formDto.Email,
+                    CCEmail = formDto.CCEmail,
+                    PhoneNumber = formDto.PhoneNumber,
+                    Subject = formDto.Subject,
+                    Category = formDto.Category,
+                    Building = formDto.Building,
+                    Company = formDto.Company,
+                    Description = formDto.Description,
+                    Attachment = newFileName,
+                    CreatedAt = DateTime.Now,
+                };
+
+                context.Form.Add(form);
+                context.SaveChanges();
+
+                string subject = "Issues Form Submission: " + formDto.Subject;
+                string body = $"Dear {formDto.Name}," +
+                            $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
+                            $"Report ID: {form.Id}<br>" +
+                            $"Name: {formDto.Name}<br>" +
+                            $"Email: {formDto.Email}<br>" +
+                            $"CC Email: {formDto.CCEmail}<br>" +
+                            $"Phone Number: {formDto.PhoneNumber}<br>" +
+                            $"Subject: {formDto.Subject}" +
+                            $"<br>Category: {formDto.Category}" +
+                            $"<br>Building: {formDto.Building}" +
+                            $"<br>Company: {formDto.Company}" +
+                            $"<br>Description: {formDto.Description}" +
+                            $"<br><br>We apologize for any inconvenience caused and appreciate your report. Our team has initiated an investigation process to identify the root cause of this issue and is actively working to rectify it. Should further assistance be required, our team members will reach out to you promptly to provide additional support in resolving this matter." +
+                            $"<br><br>Thank you for your patience and understanding.<br><br>";
+
+                // Call SendMail method
+                SendMail(new Mail
+                {
+                    From = "robin28@student.ub.ac.id",
+                    To = $"{formDto.Email}, robin28@student.ub.ac.id",
+                    CCEmail = $"{formDto.CCEmail}, valliskanw@student.ub.ac.id",
+                    Subject = subject,
+                    Body = body,
+                    AttachmentPath = finalAttachPath
+                });
+
+                return RedirectToAction("Confirmation", "Form");
             }
-            else
+
+            // If we got this far, something failed, redisplay form
+            ViewBag.Categories = context.Category_Param.Select(c => new SelectListItem
             {
-                newFileName = "-";
-                finalAttachPath = "-";
-            }
+                Value = c.Category_Issues,
+                Text = c.Category_Issues
+            }).ToList();
 
-            //save the new product in the database
-            Form form = new Form()
+            ViewBag.Companies = context.Company_Param.Select(c => new SelectListItem
             {
-                Name = formDto.Name,
-                Email = formDto.Email,
-                CCEmail = formDto.CCEmail,
-                PhoneNumber = formDto.PhoneNumber,
-                Subject = formDto.Subject,
-                Category = formDto.Category,
-                Building = formDto.Building,
-                Company = formDto.Company,
-                Description = formDto.Description,
-                Attachment = newFileName,
-                CreatedAt = DateTime.Now,
-            };
+                Value = c.Company_Name,
+                Text = c.Company_Name
+            }).ToList();
 
-            context.Form.Add(form);
-            context.SaveChanges();
-
-            string defaultSender = "robin28@student.ub.ac.id";
-            string defaultRecipient = "robin28@student.ub.ac.id";
-            string subject = "Issues Form Submission: " + formDto.Subject;
-            string body = $"Dear {formDto.Name}," +
-                        $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
-                        $"Report ID: {form.Id}<br>" +
-                        $"Name: {formDto.Name}<br>" +
-                        $"Email: {formDto.Email}<br>" +
-                        $"CC Email: {formDto.CCEmail}<br>" +
-                        $"Phone Number: {formDto.PhoneNumber}<br>" +
-                        $"Subject: {formDto.Subject}" +
-                        $"<br>Category: {formDto.Category}" +
-                        $"<br>Building: {formDto.Building}" +
-                        $"<br>Company: {formDto.Company}" +
-                        $"<br>Description: {formDto.Description}" +
-                        $"<br><br>We apologize for any inconvenience caused and appreciate your report. Our team has initiated an investigation process to identify the root cause of this issue and is actively working to rectify it. Should further assistance be required, our team members will reach out to you promptly to provide additional support in resolving this matter." +
-                        $"<br><br>Thank you for your patience and understanding.<br><br>";
-            
-            // Call SendMail method
-            SendMail(new Mail
+            ViewBag.Buildings = context.Building_Param.Select(b => new SelectListItem
             {
-                From = defaultSender,
-                To = $"{formDto.Email},{defaultRecipient}",
-                CCEmail = $"{formDto.CCEmail},{defaultCC}",
-                Subject = subject,
-                Body = body,
-                AttachmentPath = finalAttachPath
-            });
+                Value = b.Building,
+                Text = b.Building
+            }).ToList();
 
-            return RedirectToAction("Confirmation","Form");
+            return View(formDto);
         }
 
         [HttpPost]

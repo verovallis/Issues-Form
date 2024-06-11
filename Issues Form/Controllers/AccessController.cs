@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Issues_Form.Models;
 
-namespace Issues_Form.Controllers // Change the namespace from Models to Controllers
+namespace Issues_Form.Controllers 
 {
     public class AccessController : Controller // Change the class namespace accordingly
     {

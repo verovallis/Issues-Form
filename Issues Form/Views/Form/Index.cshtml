@@ -7,6 +7,10 @@
         max-height: 70px; /* Set your desired maximum height */
         overflow: hidden;
     }
+    .mb-5 {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+    }
 </style>
 
 <h2 class="text-center mb-5">Admin : Form List</h2>
@@ -31,16 +35,17 @@
             <th onclick="sortTable(0)">ID</th>
             <th onclick="sortTable(1)">Name</th>
             <th onclick="sortTable(2)">Email</th>
-            <th onclick="sortTable(3)">Phone Number</th>
-            <th onclick="sortTable(4)">Subject</th>
-            <th onclick="sortTable(5)">Category</th>
-            <th onclick="sortTable(6)">Building</th>
-            <th onclick="sortTable(7)">Company</th>
-            <th onclick="sortTable(8)">Description</th>
-            <th onclick="sortTable(9)">Attachment</th>
-            <th onclick="sortTable(10)">Created At</th>
-            <th onclick="sortTable(11)">Status</th>
-            <th onclick="sortTable(12)">Admin Comment</th>
+            <th onclick="sortTable(3)">CCEmail</th>
+            <th onclick="sortTable(4)">Phone Number</th>
+            <th onclick="sortTable(5)">Subject</th>
+            <th onclick="sortTable(6)">Category</th>
+            <th onclick="sortTable(7)">Building</th>
+            <th onclick="sortTable(8)">Company</th>
+            <th onclick="sortTable(9)">Description</th>
+            <th onclick="sortTable(10)">Attachment</th>
+            <th onclick="sortTable(11)">Created At</th>
+            <th onclick="sortTable(12)">Status</th>
+            <th onclick="sortTable(13)">Admin Comment</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -51,6 +56,7 @@
                 <td>@form.Id</td>
                 <td>@form.Name</td>
                 <td>@form.Email</td>
+                <td>@form.CCEmail</td>
                 <td>@form.PhoneNumber</td>
                 <td>@form.Subject</td>
                 <td>@form.Category</td>

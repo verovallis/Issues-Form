@@ -110,3 +110,19 @@ h2.text-center.mb-5 {
 .form-select option {
     font-family: system-ui;
 }
+
+.title-form {
+    font-family: system-ui;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 50px;
+    font-size: 30px;
+}
+
+.mandatory-text {
+    color: red;
+}
+
+.mandatory {
+    margin-bottom: 20px;
+}

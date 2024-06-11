@@ -8,9 +8,9 @@ namespace Issues_Form.Models
         public string Name { get; set; } = "";
         [Required, MaxLength(100)]
         public string Email { get; set; } = "";
-        [Required, MaxLength(100)]
-        public string? CCEmail { get; set; }
         [MaxLength(100)]
+        public string? CCEmail { get; set; }
+        [Required, MaxLength(100)]
         public string PhoneNumber { get; set; } = "";
         [Required, MaxLength(100)]
         public string Subject { get; set; } = "";

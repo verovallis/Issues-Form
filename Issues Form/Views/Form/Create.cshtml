@@ -9,9 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Request</title>
     <base href="~/" />
-    <link rel="stylesheet" href="~/css/globals.css" />
-    <link rel="stylesheet" href="~/css/styleguide.css" />
-    <link rel="stylesheet" href="~/css/Form.css" />
+    <link rel="stylesheet" href="~/css/globals.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/styleguide.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Form.css" asp-append-version="true" />
 </head>
 <body>
     <h1 class="title-form">Maintenance Customer Request</h1>
@@ -123,7 +123,7 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                     <div class="col-sm-4 d-grid">
-                        <a class="btn btn-outline-primary" asp-controller="Form" asp-action="Index" role="button">
+                        <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Logout" role="button">
                             Cancel
                         </a>
                     </div>
@@ -133,6 +133,11 @@
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            // Clear CC Email validation message on page load
+            document.getElementById('CCEmailValidation').innerText = '';
+        });
+
         document.getElementById('CCRequest').addEventListener('change', function () {
             var ccEmailBox = document.getElementById('CCEmailBox');
             ccEmailBox.style.display = this.checked ? 'block' : 'none';
@@ -141,6 +146,25 @@
             if (!this.checked) {
                 document.getElementById('CCEmail').value = '';
                 document.getElementById('CCEmailValidation').innerText = '';
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function (event) {
+            var isCCRequestChecked = document.getElementById('CCRequest').checked;
+            var ccEmailInput = document.getElementById('CCEmail');
+            var ccEmailValidation = document.getElementById('CCEmailValidation');
+
+            // Only validate CC Email if the checkbox is checked
+            if (isCCRequestChecked) {
+                if (!ccEmailInput.value) {
+                    ccEmailValidation.innerText = 'CC Email is required when CC this request is checked.';
+                    event.preventDefault(); // Prevent form submission
+                } else {
+                    ccEmailValidation.innerText = ''; // Clear validation message if email is provided
+                }
+            } else {
+                // Since CC request is unchecked, remove any validation for CC Email
+                ccEmailValidation.innerText = '';
             }
         });
     </script>
