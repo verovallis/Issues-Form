@@ -19,7 +19,6 @@ namespace Issues_Form.Controllers
         private readonly IWebHostEnvironment environment;
         private readonly string defaultSender = "robin28@student.ub.ac.id";
         private readonly string defaultRecipient = "robin28@student.ub.ac.id";
-        private readonly string defaultCC = "valliskanw@student.ub.ac.id";
 
         public FormController(ApplicationDbContext context, IWebHostEnvironment environment)
         {
@@ -284,15 +283,27 @@ namespace Issues_Form.Controllers
                         $"<br>From Admin: {form.AdminComment}<br><br>";
 
             // Call SendMail method
-            SendMail(new Mail
+            if (form.CCEmail == null){
+                SendMail(new Mail
+                {
+                    From = defaultSender,
+                    To = $"{form.Email},{defaultRecipient}",
+                    Subject = subject,
+                    Body = body,
+                    AttachmentPath = "-"
+                });
+            }
+            else
             {
-                From = defaultSender,
-                To = $"{form.Email},{defaultRecipient},{form.CCEmail}",
-                Subject = subject,
-                Body = body,
-                AttachmentPath = "-"
-            });
-
+                SendMail(new Mail
+                {
+                    From = defaultSender,
+                    To = $"{form.Email},{defaultRecipient},{form.CCEmail}",
+                    Subject = subject,
+                    Body = body,
+                    AttachmentPath = "-"
+                });
+            }
             return RedirectToAction("Index", "Form");
         }
 
