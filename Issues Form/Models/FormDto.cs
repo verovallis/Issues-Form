@@ -25,6 +25,30 @@ namespace Issues_Form.Models
         public IFormFile? Attach { get; set; }
         public string Status { get; set; } = "Not Started";
         public string? AdminComment { get; set; } = "";
+    }
+    public class Category_Param
+    {
+        public int Id { get; set; }
+        public string? Category_Issues { get; set; }
+    }
+}
 
+// Building_Param.cs
+namespace Issues_Form.Models
+{
+    public class Building_Param
+    {
+        public int Id { get; set; }
+        public string? Building { get; set; }
+    }
+}
+
+// Company_Param.cs
+namespace Issues_Form.Models
+{
+    public class Company_Param
+    {
+        public int Id { get; set; }
+        public string? Company_Name { get; set; }
     }
 }

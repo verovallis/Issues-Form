@@ -3,6 +3,7 @@ using Issues_Form.Services;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Console;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.SqlServer.Server;
 using System.Net.Mail;
 using System.Net;
@@ -29,9 +30,27 @@ namespace Issues_Form.Controllers
         }
         public IActionResult Create()
         {
-            var form = context.Form.OrderByDescending(p => p.Id).ToList();
+            ViewBag.Categories = context.Category_Param.Select(c => new SelectListItem
+            {
+                Value = c.Category_Issues,
+                Text = c.Category_Issues
+            }).ToList();
+
+            ViewBag.Companies = context.Company_Param.Select(c => new SelectListItem
+            {
+                Value = c.Company_Name,
+                Text = c.Company_Name
+            }).ToList();
+
+            ViewBag.Buildings = context.Building_Param.Select(b => new SelectListItem
+            {
+                Value = b.Building,
+                Text = b.Building
+            }).ToList();
+
             return View();
         }
+
 
         [HttpPost]
         public IActionResult Create(FormDto formDto)
