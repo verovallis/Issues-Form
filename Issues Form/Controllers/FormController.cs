@@ -128,32 +128,34 @@ namespace Issues_Form.Controllers
                 context.Form.Add(form);
                 context.SaveChanges();
 
-                string subject = "Issues Form Submission: " + formDto.Subject;
-                string body = $"Dear {formDto.Name}," +
-                            $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
-                            $"Report ID: {form.Id}<br>" +
-                            $"Name: {formDto.Name}<br>" +
-                            $"Email: {formDto.Email}<br>" +
-                            $"CC Email: {formDto.CCEmail}<br>" +
-                            $"Phone Number: {formDto.PhoneNumber}<br>" +
-                            $"Subject: {formDto.Subject}" +
-                            $"<br>Category: {formDto.Category}" +
-                            $"<br>Building: {formDto.Building}" +
-                            $"<br>Company: {formDto.Company}" +
-                            $"<br>Description: {formDto.Description}" +
-                            $"<br><br>We apologize for any inconvenience caused and appreciate your report. Our team has initiated an investigation process to identify the root cause of this issue and is actively working to rectify it. Should further assistance be required, our team members will reach out to you promptly to provide additional support in resolving this matter." +
-                            $"<br><br>Thank you for your patience and understanding.<br><br>";
-
-                // Call SendMail method
-                SendMail(new Mail
-                {
-                    From = "robin28@student.ub.ac.id",
-                    To = $"{formDto.Email}, robin28@student.ub.ac.id",
-                    CCEmail = $"{formDto.CCEmail}, valliskanw@student.ub.ac.id",
-                    Subject = subject,
-                    Body = body,
-                    AttachmentPath = finalAttachPath
-                });
+            string defaultSender = "robin28@student.ub.ac.id";
+            string defaultRecipient = "robin28@student.ub.ac.id";
+            string subject = "Issues Form Submission: " + formDto.Subject;
+            string body = $"Dear {formDto.Name}," +
+                        $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
+                        $"Report ID: {form.Id}<br>" +
+                        $"Name: {formDto.Name}<br>" +
+                        $"Email: {formDto.Email}<br>" +
+                        $"CC Email: {formDto.CCEmail}<br>" +
+                        $"Phone Number: {formDto.PhoneNumber}<br>" +
+                        $"Subject: {formDto.Subject}" +
+                        $"<br>Category: {formDto.Category}" +
+                        $"<br>Building: {formDto.Building}" +
+                        $"<br>Company: {formDto.Company}" +
+                        $"<br>Description: {formDto.Description}" +
+                        $"<br><br>We apologize for any inconvenience caused and appreciate your report. Our team has initiated an investigation process to identify the root cause of this issue and is actively working to rectify it. Should further assistance be required, our team members will reach out to you promptly to provide additional support in resolving this matter." +
+                        $"<br><br>Thank you for your patience and understanding.<br><br>";
+            
+            // Call SendMail method
+            SendMail(new Mail
+            {
+                From = defaultSender,
+                To = $"{formDto.Email},{defaultRecipient}",
+                CCEmail = $"{formDto.CCEmail},{defaultCC}",
+                Subject = subject,
+                Body = body,
+                AttachmentPath = finalAttachPath
+            });
 
                 return RedirectToAction("Confirmation", "Form");
             }
@@ -225,7 +227,6 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
-
             //create formDto from form
             var formDto = new FormDto()
             {
@@ -259,15 +260,12 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
-
             //replace or add the status and AdminComment database
             form.Status = formDto.Status;
             form.AdminComment = formDto.AdminComment;
             context.SaveChanges();
 
             // pre-call SendMail method
-            string defaultSender = "robin28@student.ub.ac.id";
-            string defaultRecipient = "robin28@student.ub.ac.id";
             string subject = "Issues Form Submission: " + form.Subject;
             string body = $"Dear {form.Name}," +
                         $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
@@ -290,8 +288,7 @@ namespace Issues_Form.Controllers
             SendMail(new Mail
             {
                 From = defaultSender,
-                To = $"{formDto.Email},{defaultRecipient}",
-                CCEmail = $"{formDto.CCEmail},{defaultCC}",
+                To = $"{form.Email},{defaultRecipient},{form.CCEmail}",
                 Subject = subject,
                 Body = body,
                 AttachmentPath = "-"
@@ -308,7 +305,6 @@ namespace Issues_Form.Controllers
             {
                 return RedirectToAction("Index", "Form");
             }
-
 
             string finalPath = environment.WebRootPath + "/form/" + form.Attachment;
             if (System.IO.File.Exists(finalPath))

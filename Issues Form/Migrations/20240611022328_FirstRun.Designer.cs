@@ -9,18 +9,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Issues_Form.Migrations
+namespace IssuesForm.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240318032756_SecondMigrate")]
-    partial class SecondMigrate
+    [Migration("20240611022328_FirstRun")]
+    partial class FirstRun
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "7.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -90,6 +90,10 @@ namespace Issues_Form.Migrations
 
                     b.Property<string>("Building")
                         .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("CCEmail")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
