@@ -116,8 +116,6 @@ namespace Issues_Form.Controllers
             context.Form.Add(form);
             context.SaveChanges();
 
-            string defaultSender = "robin28@student.ub.ac.id";
-            string defaultRecipient = "robin28@student.ub.ac.id";
             string subject = "Issues Form Submission: " + formDto.Subject;
             string body = $"Dear {formDto.Name}," +
                         $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
@@ -138,8 +136,7 @@ namespace Issues_Form.Controllers
             SendMail(new Mail
             {
                 From = defaultSender,
-                To = $"{formDto.Email},{defaultRecipient}",
-                CCEmail = $"{formDto.CCEmail},{defaultCC}",
+                To = $"{formDto.Email},{defaultRecipient},{formDto.CCEmail}",
                 Subject = subject,
                 Body = body,
                 AttachmentPath = finalAttachPath
@@ -193,7 +190,6 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
-
             //create formDto from form
             var formDto = new FormDto()
             {
@@ -227,15 +223,12 @@ namespace Issues_Form.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
-
             //replace or add the status and AdminComment database
             form.Status = formDto.Status;
             form.AdminComment = formDto.AdminComment;
             context.SaveChanges();
 
             // pre-call SendMail method
-            string defaultSender = "robin28@student.ub.ac.id";
-            string defaultRecipient = "robin28@student.ub.ac.id";
             string subject = "Issues Form Submission: " + form.Subject;
             string body = $"Dear {form.Name}," +
                         $"<br><br>Thank you for submitting the Issues Form. Below are the details:<br><br>" +
@@ -258,8 +251,7 @@ namespace Issues_Form.Controllers
             SendMail(new Mail
             {
                 From = defaultSender,
-                To = $"{formDto.Email},{defaultRecipient}",
-                CCEmail = $"{formDto.CCEmail},{defaultCC}",
+                To = $"{form.Email},{defaultRecipient},{form.CCEmail}",
                 Subject = subject,
                 Body = body,
                 AttachmentPath = "-"
@@ -276,7 +268,6 @@ namespace Issues_Form.Controllers
             {
                 return RedirectToAction("Index", "Form");
             }
-
 
             string finalPath = environment.WebRootPath + "/form/" + form.Attachment;
             if (System.IO.File.Exists(finalPath))
