@@ -1,14 +1,17 @@
 using System;
+using Issues_Form.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace Issues_Form  // Replace with your project namespace
+namespace Issues_Form
 {
     public class Startup
     {
@@ -21,21 +24,23 @@ namespace Issues_Form  // Replace with your project namespace
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Configure DbContext with SQL Server
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             // Add services for MVC controllers and views
             services.AddControllersWithViews();
 
             // Add service for IHttpContextAccessor
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            
 
             // Configure cookie authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/Login";
-                    options.LogoutPath = "/Logout";
-                    options.AccessDeniedPath = "/AccessDenied";
-                    // Adjust cookie expiration and sliding expiration as needed
+                    options.LoginPath = "/Access/Login";
+                    options.LogoutPath = "/Access/Logout";
+                    options.AccessDeniedPath = "/Access/AccessDenied";
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                     options.SlidingExpiration = true;
                 });
@@ -57,7 +62,7 @@ namespace Issues_Form  // Replace with your project namespace
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // Add other error handling middleware as needed
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();

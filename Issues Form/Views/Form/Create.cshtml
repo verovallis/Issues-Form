@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Request</title>
     <base href="~/" />
-    <link rel="stylesheet" href="~/css/globals.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/globals.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/styleguide.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Form.css" asp-append-version="true" />
 </head>
@@ -23,7 +23,7 @@
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Name<span class="mandatory-text">*</span></label>
                     <div class="col-md-8">
-                        <input class="form-control" asp-for="Name" placeholder="Enter your name"/>
+                        <input class="form-control" asp-for="Name" placeholder="Enter your name" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Email<span class="mandatory-text">*</span></label>
                     <div class="col-md-8">
-                        <input type="email" id="Email" required autocomplete="email" class="form-control" asp-for="Email" placeholder="Enter your email"/>
+                        <input type="email" id="Email" required autocomplete="email" class="form-control" asp-for="Email" placeholder="Enter your email" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                 <div class="row mb-3" id="CCEmailBox" style="display: none;">
                     <label class="col-sm-4 col-form-label">CC Email</label>
                     <div class="col-md-8">
-                        <input type="email" id="CCEmail" class="form-control" asp-for="CCEmail" placeholder="Enter CC email"/>
+                        <input type="email" id="CCEmail" class="form-control" asp-for="CCEmail" placeholder="Enter CC email" />
                         <span class="text-danger" asp-validation-for="CCEmail" id="CCEmailValidation"></span>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Phone Number<span class="mandatory-text">*</span></label>
                     <div class="col-md-8">
-                        <input class="form-control" asp-for="PhoneNumber" placeholder="Enter your phone number"/>
+                        <input class="form-control" asp-for="PhoneNumber" placeholder="Enter your phone number" />
                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                         <span asp-validation-for="Attach" class="text-danger"></span>
                     </div>
                 </div>
-                
+
                 <p class="mandatory">*Please fill in the box; it is mandatory.</p>
 
                 <div class="row">

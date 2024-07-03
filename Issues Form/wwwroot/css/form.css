@@ -77,7 +77,7 @@
 }
 
 h2.text-center.mb-5 {
-  font-size: 2rem; /* Adjust the font size as needed */
+  font-size: 2rem; 
   font-weight: bold;
 }
 .col-form-label {
@@ -125,4 +125,34 @@ h2.text-center.mb-5 {
 
 .mandatory {
     margin-bottom: 20px;
+}
+
+.h2-history {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.button-cancel {
+    width: 30%;
+    height: 15%;
+    border-radius: 80px;
+    padding: 12px 24px;
+    font-family: var(--body-2-medium-font-family);
+    font-weight: var(--body-2-medium-font-weight);
+    font-size: var(--body-2-medium-font-size);
+    line-height: var(--body-2-medium-line-height);
+    letter-spacing: var(--body-2-medium-letter-spacing);
+    background-color: transparent;
+    color: var(--neutral-800);
+    border: 2px solid var(--neutral-800);
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.table-row-content {
+    max-height: 70px;
+    overflow: hidden;
 }

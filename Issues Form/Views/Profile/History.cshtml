@@ -1,0 +1,81 @@
+@model List<Issues_Form.Models.Form>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+                .table th, .table td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                }
+
+                .table th {
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    text-align: center;
+                    background-color: #f2f2f2;
+                    color: black;
+                }
+
+                .table td {
+                    max-height: 70px;
+                    overflow: hidden;
+                }
+
+                .h2-history {
+                    margin-bottom: 20px;
+                    margin-top: 20px;
+                    font-size: 2rem;
+                    font-weight: bold;
+                    text-align: center;
+                }
+        </style>
+    </head>
+    <body>
+        <h2 class="h2-history">USER HISTORY REQUEST</h2>
+
+        @if (!Model.Any())
+    {
+        <p>No forms found</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Subject</th>
+                    <th>Created At</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var form in Model)
+                {
+                <tr>
+                    <td>@form.Id</td>
+                    <td>@form.Name</td>
+                    <td>@form.Subject</td>
+                    <td>@form.CreatedAt.ToString("HH:mm:ss dd/MM/yyyy")</td>
+                    <td>@form.Status</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+        <div>
+            <a class="btn btn-outline-primary" asp-controller="Form" asp-action="Create" role="button">
+                Back
+            </a>
+        </div>
+    </body>
+</html>

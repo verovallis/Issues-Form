@@ -144,17 +144,30 @@ namespace Issues_Form.Controllers
                         $"<br>Description: {formDto.Description}" +
                         $"<br><br>We apologize for any inconvenience caused and appreciate your report. Our team has initiated an investigation process to identify the root cause of this issue and is actively working to rectify it. Should further assistance be required, our team members will reach out to you promptly to provide additional support in resolving this matter." +
                         $"<br><br>Thank you for your patience and understanding.<br><br>";
-            
-            // Call SendMail method
-            SendMail(new Mail
-            {
-                From = defaultSender,
-                To = $"{formDto.Email},{defaultRecipient},{formDto.CCEmail}",
-                Subject = subject,
-                Body = body,
-                AttachmentPath = finalAttachPath
-            });
 
+                // Call SendMail method
+                if (form.CCEmail == null)
+                {
+                    SendMail(new Mail
+                    {
+                        From = defaultSender,
+                        To = $"{form.Email},{defaultRecipient}",
+                        Subject = subject,
+                        Body = body,
+                        AttachmentPath = "-"
+                    });
+                }
+                else
+                {
+                    SendMail(new Mail
+                    {
+                        From = defaultSender,
+                        To = $"{form.Email},{defaultRecipient},{form.CCEmail}",
+                        Subject = subject,
+                        Body = body,
+                        AttachmentPath = "-"
+                    });
+                }
                 return RedirectToAction("Confirmation", "Form");
             }
 

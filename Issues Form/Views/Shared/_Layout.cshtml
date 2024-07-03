@@ -4,30 +4,46 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Issues_Form</title>
+    <base href="~/" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Login.css" />
-    <link rel="stylesheet" href="~/Issues_Form.styles.css" asp-append-version="true" />
 </head>
 <body>
-<header>
-    <!-- Navbar -->
-    <nav class="navbar">
+    <header>
+        <nav class="navbar">
         <div class="navbar-logo">
-            <!-- Tambahkan href dengan parameter unik untuk memaksa reload saat gambar diklik -->
             <a href="@Url.Action("Refresh", "Home", new { reload = "true" })">
-                <img src="https://media.licdn.com/dms/image/D4D0BAQGjpdt_7qB22g/company-logo_200_200/0/1695231492698?e=2147483647&v=beta&t=WIX2uuSeQdxsVi8bYOqkSgudgADI2oYfcWkZDpdfcN8">
+                <img src="https://media.licdn.com/dms/image/D4D0BAQGjpdt_7qB22g/company-logo_200_200/0/1695231492698?e=2147483647&v=beta&t=WIX2uuSeQdxsVi8bYOqkSgudgADI2oYfcWkZDpdfcN8" alt="Company Logo">
             </a>
         </div>
-        <ul class="navbar-menu">
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LogOut">Log Out</a>
-            </li>
-        </ul>
-    </nav>
-</header>
 
-
+        @if (User.IsInRole("Admin"))
+        {
+        <div class="profile">
+            <div class="profile-logo">
+                <img src="~/lib/Profile.png" alt="Profile Logo">
+            </div>
+            <div class="dropdown-content">
+                @*<a asp-area="" asp-controller="Profile" asp-action="Inbox">Inbox</a>*@
+                <a asp-area="" asp-controller="Home" asp-action="LogOut">Logout</a>
+            </div>
+        </div>
+        }
+        else
+        {
+        <div class="profile">
+            <div class="profile-logo">
+                <img src="~/lib/Profile.png" alt="Profile Logo">
+            </div>
+            <div class="dropdown-content">
+                <a asp-area="" asp-controller="Profile" asp-action="History">History</a>
+                <a asp-area="" asp-controller="Home" asp-action="LogOut">Logout</a>
+            </div>
+        </div>
+        }
+        </nav>
+    </header>
 
     <div class="container">
         <main role="main" class="pb-3">
