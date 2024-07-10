@@ -7,8 +7,8 @@ using Issues_Form.Models;
 
 namespace Issues_Form.Controllers 
 {
-    public class AccessController : Controller // Change the class namespace accordingly
-    {
+    public class AccessController : Controller 
+
         // Only users with the "Admin" role can access the "Index" page
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
