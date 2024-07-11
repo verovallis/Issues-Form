@@ -4,12 +4,33 @@
 
 <style>
     .table-row-content {
-        max-height: 70px; /* Set your desired maximum height */
+        max-height: 70px;
         overflow: hidden;
     }
+
     .mb-5 {
         margin-top: 3rem;
         margin-bottom: 3rem;
+    }
+
+    .attachment {
+        position: relative;
+        display: inline-block;
+    }
+
+    .attachment-preview {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 110%;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        padding: 10px;
+        z-index: 1;
+    }
+
+    .attachment:hover .attachment-preview {
+        display: block;
     }
 </style>
 
@@ -67,7 +88,36 @@
                         <span>@form.Description</span>
                     </div>
                 </td>
-                <td><img src="/form/@form.Attachment" width="100" /></td>
+                <td>
+                    @if (string.IsNullOrEmpty(form.Attachment) || form.Attachment == "-")
+                    {
+                        <span>No file attached</span>
+                    }
+                    else
+                    {
+                        <div class="attachment">
+                            @if (form.Attachment.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <a href="/form/@form.Attachment" target="_blank">View Attachment </a>
+                            }
+                            else
+                            {
+                                <a href="/form/@form.Attachment" target="_blank">View Attachment</a>
+                            }
+                            <div class="attachment-preview">
+                                @if (form.Attachment.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <embed src="/form/@form.Attachment" type="application/pdf" width="200" height="200" />
+                                }
+                                else
+                                {
+                                    <img src="/form/@form.Attachment" width="200" />
+                                }
+                            </div>
+                        </div>
+                    }
+                </td>
+
                 <td>@form.CreatedAt.ToString("HH:mm:ss dd/MM/yyyy")</td>
                 <td>@form.Status</td>
                 <td>@form.AdminComment</td>
@@ -120,8 +170,6 @@
             switching = true;
             // Set the sorting direction to ascending:
             dir = "asc";
-            /* Make a loop that will continue until
-            no switching has been done: */
             while (switching) {
                 // Start by saying: no switching is done:
                 switching = false;

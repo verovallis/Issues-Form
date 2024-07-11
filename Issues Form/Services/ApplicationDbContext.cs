@@ -13,6 +13,7 @@ namespace Issues_Form.Services
         public DbSet<Category_Param> Category_Param { get; set; }
         public DbSet<Building_Param> Building_Param { get; set; }
         public DbSet<Company_Param> Company_Param { get; set; }
+        public DbSet<Account> Account { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
