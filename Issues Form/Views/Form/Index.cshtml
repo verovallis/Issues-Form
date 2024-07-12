@@ -96,22 +96,27 @@
                     else
                     {
                         <div class="attachment">
-                            @if (form.Attachment.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
-                            {
-                                <a href="/form/@form.Attachment" target="_blank">View Attachment </a>
-                            }
-                            else
-                            {
-                                <a href="/form/@form.Attachment" target="_blank">View Attachment</a>
-                            }
+                            <a href="/form/@form.Attachment" target="_blank">View Attachment</a>
                             <div class="attachment-preview">
                                 @if (form.Attachment.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
                                 {
                                     <embed src="/form/@form.Attachment" type="application/pdf" width="200" height="200" />
+                                @* }
+                                else if (form.Attachment.EndsWith(".docx", StringComparison.OrdinalIgnoreCase) ||
+                                form.Attachment.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <iframe src="https://docs.google.com/gview?url=@Url.Action("FormFile", "Controller", new { id = form.Attachment })&embedded=true" width="200" height="200"></iframe> *@
+                                }
+                                else if (form.Attachment.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+                                form.Attachment.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+                                form.Attachment.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
+                                form.Attachment.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <img src="/form/@form.Attachment" width="200" />
                                 }
                                 else
                                 {
-                                    <img src="/form/@form.Attachment" width="200" />
+                                    <span>Preview not available</span>
                                 }
                             </div>
                         </div>

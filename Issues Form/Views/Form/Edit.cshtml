@@ -124,7 +124,33 @@
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Attachment</label>
                 <div class="col-md-8">
-                    <img src="/form/@ViewData["Attachment"]" width="150" />
+                    @if (string.IsNullOrEmpty(ViewData["Attachment"]?.ToString()) || ViewData["Attachment"]?.ToString() == "-")
+                    {
+                        <span>No file attached</span>
+                    }
+                    else
+                    {
+                        <div class="attachment">
+                            <div class="attachment-preview">
+                                @if (ViewData["Attachment"].ToString().EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <embed src="/form/@ViewData["Attachment"]" type="application/pdf" width="200" height="200" />
+                                }
+                                else if (ViewData["Attachment"].ToString().EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+                                ViewData["Attachment"].ToString().EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+                                ViewData["Attachment"].ToString().EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
+                                ViewData["Attachment"].ToString().EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <img src="/form/@ViewData["Attachment"]" width="200" />
+                                }
+                                else
+                                {
+                                    <span>Preview not available</span>
+                                }
+                            </div>
+                            <a href="/form/@ViewData["Attachment"]" download>Download Attachment</a>
+                        </div>
+                    }
                 </div>
             </div>
 
